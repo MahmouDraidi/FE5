@@ -19,7 +19,7 @@ $conn = new mysqli($servername, $username,"","webproj");
 $sql = "SELECT username FROM usertable WHERE username='max'";
 $result = $conn->query($sql);
 
-/*if ($result->num_rows > 0) {
+/* ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
         echo "id: " . $row["username"]. "<br>";
@@ -61,17 +61,19 @@ if(isset($_POST["register"])) {
     $mob = $_POST["mobile"];
     $FBacc = $_POST["facebook"];
 
-    $conn = new mysqli($servername, $username, "", "webproj");
-    $sql = "select from users where username=" . "$regUname";
+    $conn = new mysqli($servername, $username,"","webproj");
+    $sql = "SELECT username FROM usertable ";
     $result = $conn->query($sql);
+
     if ($result->num_rows > 0) {
         // output data of each row
-        while ($row = $result->fetch_assoc()) {
-            if ($x == $row["username"]) {
-                echo "found in DB";
-            }
+        while($row = $result->fetch_assoc()) {
+
+            if($regUname==$row["username"]){$er="The username  $regUname  is already taken ";}
         }
 
+    } else {
+        echo "0 results";
     }
 
 
@@ -109,6 +111,8 @@ if(isset($_POST["register"])) {
         $er9='Enter valid email';
     }
 
+    $sqlEmail="Select from users WHERE email="."$regEmail";
+    $conn->query($sql);
     if($conn->affected_rows > 0) {
         $er10='The email: '.$regEmail.' is already registered, choose another!';
     }
