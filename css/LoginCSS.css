@@ -1,0 +1,332 @@
+*
+{
+    padding: 0;
+    margin: 0;
+    //box-sizing: border-box;
+}
+:root{
+    --main-site-col:#00bcd4;
+}
+body
+{
+//background-image: url(.mg/admin.jpeg);
+    background-size: cover;
+}
+
+.parent
+{
+    position: relative;
+    margin:5%  auto;
+    border: 2px solid #00000075;
+    border-radius: 15px;
+    background-color:rgba(0,188,212,.5);
+    box-shadow: 20px 20px 100px #00BCD4;
+
+
+}
+
+.con > h1
+{
+    position: relative;
+    top: 10px;
+    text-align: center;
+    color: #fff;
+    font-size: 30px;
+    font-family: 'Anton', sans-serif;
+    margin: 10px;
+
+
+}
+
+.con > input
+{
+    background-color: inherit;
+    position: relative;
+    left: 25px;
+    top: 40px;
+    width: 85%;
+    height: 32px;
+//background-color: rgba(255, 255, 255, 0.5);
+    border:1px solid transparent;
+    border-radius: 5px;
+    font-size: 18px;
+    border-bottom:2px solid white;
+    padding-left: 10px;
+    outline: none;
+
+}
+
+.con > span
+{
+    position: absolute;
+    left: 35px;
+    top: 110px;
+    display: inline-block;
+    width: 400px;
+    height: 32px;
+    font-size: 20px;
+    line-height: 30px;
+    font-family: 'Anton', sans-serif;
+    display: none;
+    margin-bottom: 0;
+
+
+}
+
+.con > input:nth-of-type(2)
+{
+    position: relative;
+    top: 80px;
+}
+
+#pass
+{
+    position: absolute;
+    top: 180px;
+    margin: 0;
+    margin-left: -45px;
+    width: 400px;
+    height: 32px;
+    font-size: 20px;
+    line-height: 30px;
+    font-family: 'Anton', sans-serif;
+    display: none;
+    color: #000;
+    padding: 0
+}
+.con .icon
+{
+    position: relative;
+    top: 40px;
+    right: 10px;
+    font-size: 20px;
+}
+
+.con .icon1
+{
+    position: relative;
+    top: 80px;
+    right: 10px;
+    font-size: 20px;
+}
+
+.con #link
+{
+    position: relative;
+    top:90px;
+    margin-right: 20px;
+    float: right;
+    font-family: 'Anton', sans-serif;
+    color: #fff;
+    text-decoration: none;
+}
+
+.con #link:hover
+{
+    text-decoration: underline;
+    color:#000;
+}
+.login
+{
+    position: relative;
+    margin-left: 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 25px;
+    color: #ffffff;
+    border-radius: 5px;
+    background-color: #00bcd4;
+    line-height: 40px;
+    display: inline-block;
+    height: 40px;
+    font-family: 'Anton', sans-serif;
+    transition: all .5s;
+    border:1px  solid #00000075;
+    width:45%;
+}
+.login:hover
+{
+    background-color: #ffffff;
+    color: #00BCD4;
+    transform: scale(1.1);
+    border: none;
+    border: 1px solid #00bcd4;
+}
+
+.loginB
+{
+    position: relative;
+    top: 110px;
+    left: 25px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 25px;
+    color: #ffffff;
+    border-radius: 5px;
+    background-color: #00bcd4;
+    line-height: 40px;
+    display: inline-block;
+    width: 85%;
+    height: 40px;
+    font-family: 'Anton', sans-serif;
+    transition: all .5s;
+    border:1px  solid #00000075;;
+}
+.loginB:hover
+{
+    background-color: #ffffff;
+    color: #00BCD4;
+    transform: scale(1.1);
+    border: 1px solid #00bcd4;
+
+}
+.userimg{
+    margin-left: 35%;
+
+
+}
+.reg {
+    position: absolute;
+    margin: 5px;
+    bottom: 0px;
+}
+#reglink{
+display: inline;
+    position: relative;
+
+    font-family: 'Anton', sans-serif;
+    color: black;
+    text-decoration: none;
+}
+
+#reglink:hover
+{
+
+    color:green;
+    cursor: pointer;
+
+}
+
+
+/* reg reg reg reg reg reg reg reg reg reg reg reg reg */
+.mainregdiv{
+    display: block;
+    width: 40%;
+    height: 100%;
+    background-color: #fafafa;
+    margin-top: 105px;
+    margin-left: 30%;
+    padding: 2%;
+    border-radius: 10%;
+    position: relative;
+    box-shadow: #00bcd4 0 0 20px;
+}
+.reg_lab{
+    font-size: 1.2em;
+    margin: 12px;
+    padding: 5px;
+    width: 112px;
+}
+.reg_inp{
+    width: 70%;
+//color: red;
+    height: 30px;
+    border-radius: 10px;
+    padding: 5px;
+    outline: none;
+}
+.reg_inp1{
+    width: 40%;
+//color: red;
+    height: 30px;
+    border-radius: 10px;
+    padding: 5px;
+    outline: none;
+}
+.reg_inp1:focus,.reg_inp1:hover,.reg_inp:hover,.reg_inp:focus{
+    box-shadow: #00bcd4 0 0 20px; ;
+}
+.sexdiv{
+    border-bottom: 1px solid dimgray;
+}
+.adresslabspan{
+    height: 150px;
+    float: left;
+    margin-top: -7px;
+
+}
+.addressdiv{
+    border-bottom:1px solid dimgray;
+}
+.regCloseIcon{
+    cursor: pointer;
+
+}
+
+
+
+.icon-bar {
+    position: fixed;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    right:0%;
+}
+
+
+#close {
+    position: absolute;
+    right: 35px;
+    top: 15px;
+    font-size: 40px;
+    font-weight: bold;
+    color: #8b8b8b;
+
+}
+
+#close:hover,
+#close:focus {
+    color: #f44336;
+    cursor: pointer;
+}
+
+#regSpan{
+
+    background-color: rgba(0,0,0,.3);
+    width: 100%;
+    position: absolute;
+}
+
+
+#editDiv{
+    width: 80px;
+    height: 80px;
+    position: fixed;
+    z-index: 34;
+    bottom: 5px;
+    right: 5px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0px 5px 10px black;
+    border: 1px solid var(--main-site-col);
+
+
+
+}
+#editDiv:hover{
+    cursor: pointer;
+    background: var(--main-site-col);
+    //border: 1px solid yellow;
+}
+#editDiv:hover #editIcon{
+    color:white;
+}
+#editIcon{
+    margin: 22px ;
+    font-size: 2.5em;
+    color: var(--main-site-col);
+}
+.errorMSG{
+    color: red;
+}

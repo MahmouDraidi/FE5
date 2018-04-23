@@ -1,0 +1,174 @@
+
+:root{
+    --main-site-col:#00bcd4;
+}
+#profileContainer{
+    position: absolute;
+    display: block;
+    top:80px;
+    left: 100px;
+    z-index: -10;
+    border: 1px solid var(--main-site-col);
+    padding: 30px;
+    width: 100%;
+
+}
+
+.prof_inp
+{
+    height: 30px;
+    color: black;
+    background: white;
+    padding: 5px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+
+
+}
+
+.prof_lab
+{
+    margin: 10px 0px 10px 0px;
+    font-size: 15px;
+    float: left;
+
+
+}
+#prof_info{
+
+    min-width: 300px;
+
+}
+
+.input_cont{
+    padding: 10px;
+}
+#userimg{
+    border-radius: 50%;
+    width: 50%;
+    height: 50%;
+min-width: 300px;
+
+}
+
+.nav>li>a:hover{
+    background-color: inherit;
+
+}
+#nameAndImg{
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+.ProfLabel{
+    font-size: 2em;
+    position: relative;
+    width: 20%;
+}
+#fbIcon{
+    font-size: 2.3em;
+}
+.secTitle{
+    font-size: 3em;
+}
+#editDiv{
+    width: 80px;
+    height: 80px;
+    position: fixed;
+    z-index: 34;
+    bottom: 5px;
+    right: 5px;
+    background: yellow;
+    border-radius: 50%;
+    box-shadow: 0px 5px 10px black;
+
+
+
+}
+#editDiv:hover{
+    cursor: pointer;
+    background: yellow;
+    border: 1px solid yellow;
+}
+#editIcon{
+    margin: 25px ;
+    font-size: 2.5em;
+    color: black;
+}
+#cancel,#editButton{
+    margin: 10px;
+    display: none;
+    border: 1px solid var(--main-site-col);
+    background: white;
+    color: #00bcd4;
+    border-radius: 10px;
+}
+
+/*-------------------------------------------MainProile------------*/
+#mainProfile{
+    margin-top: 95px;
+    display: block;
+    position: relative;
+
+    background: rgba(0,188,212,.5);
+}
+
+
+.navbar-brand .glyphicon{
+    display:inline-block;
+    font-size:36px;
+    color:#fff;
+    vertical-align:middle;
+    margin-right:20px;
+    position:relative;
+    top:-2px;
+}
+
+
+
+
+
+.post-body{
+    margin-top:30px;
+    font-size:16px;
+}
+
+@media (min-width:992px) {
+    .post-title{
+        text-align:right;
+        padding-right:30px;
+    }
+}
+
+.post-title .author{
+    text-transform:uppercase;
+}
+
+.post-body figure{
+    margin-bottom:10px;
+    text-align:center;
+}
+
+.post-title .author span{
+    margin-left:5px;
+}
+
+.post-title h1{
+    font-weight:bold;
+    margin-top:30px;
+}
+
+@media (max-width:767px) {
+    .post-title h1{
+        margin-top:20px;
+        font-size:32px;
+        margin-bottom:10px;
+    }
+}
+
+
+
+div.container.post{
+    margin-bottom:50px;
+}
+

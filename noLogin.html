@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Advertiser</title>
+    <link rel="stylesheet" type="text/css" href="css/nologinCSS.css" >
+    <link rel="stylesheet" type="text/css" href="css/regCSS.css" >
+    <link rel="stylesheet" type="text/css" href="css/Head&side.css" >
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+
+
+
+</head>
+<body>
+
+<div id="hhh" class="headerdiv w3-row" >
+
+
+
+    <span class="w3-col s4">
+
+
+    <span class="menuicon"  >
+        <div id="mc" class="menuCont" onclick="myFunction(this),hide(sss)">
+  <div id="bar1"></div>
+  <div id="bar2"></div>
+  <div id="bar3"></div>
+       </div>
+        <span class="menutitle"><p style=" font-family: 'Pacifico', cursive;">lazmk?</p></span>
+    </span>
+
+
+</span>
+    <span class="searcharea w3-col s4" id="ic1">
+             <form>
+                <input  id="searchinp" class="w3-input w3-border w3-animate-input w3-white" type="text" placeholder="Search" style="background-image:url(img/searchicon.png); ">
+             </form>
+    </span>
+
+
+    <span class="accountinf w3-col s4 w3-center">
+       <!--
+
+        <div id="sp" class="w3-row w3-right"><p id="username">Mahmoud</p></div>-->
+
+        <ul id="nameAndImg" onmouseover="document.getElementById('ddm').style.display='block'" onmouseleave="document.getElementById('ddm').style.display=''" class=" navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a data-toggle="dropdown" aria-expanded="false" href="#" class="dropdown-toggle"> <span class="caret"></span><img src="img/userimg.png" class="dropdown-image" /></a>
+                    <p style="float: right" class="w3-col " id="username">Mahmoud</p>
+                    <ul id="ddm" role="menu" class="dropdown-menu dropdown-menu-right">
+                        <li role="presentation"><a href="#">Log in </a></li>
+                        <li role="presentation"><a style="cursor:pointer" onclick="fun(1)" > Sign up</a></li>
+
+                    </ul>
+
+
+</li>
+        </ul>
+    </span>
+</div>
+
+
+
+
+<!------------------------------siiiiide      menu----------------------------------------------------->
+<!--<div id="sss" class="sidediv" >
+    <ul class="asidelist">
+
+
+
+
+
+
+
+
+
+
+
+
+        <li class="home" data-hint="Home">
+            <a href="contactUs.html"  class="aside__link">
+                <i class=" sideic fa fa-envelope w3-xlarge "></i>
+                <p class="asidetext w3-animate-bottom">Call us</p>
+            </a>
+        </li>
+
+
+    </ul>
+
+</div>
+-->
+<!------------------------------siiiiide      menu----------------------------------------------------->
+<div id="sss" class="sidediv" >
+    <ul class="asidelist">
+        <li title="Home" class="home" data-hint="Home">
+            <a  id="chosen" href="noLogin.html" class="aside__link">
+                <i id="chosenicon" class="sideic fa fa-home "style="font-size: 32px;"></i>
+                <p id="chosentext"  class="asidetext w3-animate-bottom">Home</p>
+            </a>
+        </li>
+
+        <li  class="home" data-hint="Home">
+            <a onmouseover="notInAlert()" onmouseout="stopSpin()" href="" id="profile" class=" aside__link">
+                <i   class="sideic glyphicon glyphicon-user w3-xlarge " ></i>
+                <p class="asidetext w3-animate-bottom">Profile</p>
+            </a>
+        </li>
+
+        <li class="home" data-hint="Home">
+        <a onmouseover="notInAlert()" onmouseout="stopSpin()" href="" id="add" class="aside__link" >
+            <i class="sideic  glyphicon glyphicon-plus w3-xlarge "></i>
+            <p class="asidetext w3-animate-bottom">  Add ad</p>
+        </a>
+        </li>
+
+        <li class="home" data-hint="Home">
+            <a href="contactUs.html" class="aside__link">
+                <i class=" sideic fa fa-envelope w3-xlarge "></i>
+                <p class="asidetext w3-animate-bottom">Call us</p>
+            </a>
+        </li>
+
+        <li class="home" data-hint="Home">
+
+
+            <a  href="LoginPage.html" id="loginLink" class="aside__link">
+                <i id="loginIcon"  class=" sideic  glyphicon glyphicon-log-in w3-xlarge "></i>
+                <p id="loginText"  class=" asidetext w3-animate-bottom">Sign in</p>
+            </a>
+
+        </li>
+
+
+
+    </ul>
+
+</div>
+<!------------------------------------products menu----------------------------------------------->
+<span id="regSpan"  >
+<div onblur="fun(0)" class="mainregdiv w3-animate-zoom">
+
+    <div class=" ">
+        <h2 style="text-align: center">Account Info</h2>
+
+        <span onclick="fun(0)" id="close" title="Close Modal">&times;</span>
+
+
+
+
+        <h3>Personal info</h3>
+    </div>
+
+    <div class="">
+        <form>
+        <div class="">
+            <label class="reg_lab">Username</label>
+            <input class="reg_inp w3-border w3-white " type="text" placeholder="username">
+        </div>
+        <div class=" ">
+
+        <div class="">
+            <label class="reg_lab">First Name</label>
+            <input class="reg_inp w3-border w3-white" type="text" placeholder="First name">
+        </div>
+
+        <div class="">
+            <label class="reg_lab">Last Name</label>
+            <input class="reg_inp w3-border w3-white" type="text" placeholder="Last name">
+        </div>
+            <div class="">
+                <label class="reg_lab">Birth date</label>
+                <input class="reg_inp w3-border w3-white" type="Date">
+            </div>
+            <div class="">
+                <label class="reg_lab">Job</label>
+                <input class="reg_inp w3-border w3-white" type="Job" placeholder="Job">
+            </div>
+
+
+
+            <div class="sexdiv">
+
+            <label class="reg_lab">Sex</label>
+
+                <input class="w3-radio" type="radio" name="gender" value="male" checked>
+                <label class="reg_lab">Male</label>
+
+                <input class="w3-radio" type="radio" name="gender" value="female">
+                <label class="reg_lab">Female</label>
+            </div>
+
+        <div class ="addressdiv">
+            <span class="adresslabspan">
+                <h3>Adress</h3>
+            </span>
+            <span style="margin-top: 10px">
+                <label class="reg_lab">Building Nom.</label>
+                <input class="reg_inp1 w3-border w3-white" type="text" placeholder=" Building Nom. (required)">
+                <label class="reg_lab">Street </label>
+                <input class="reg_inp1 w3-border w3-white" type="text" placeholder=" Street (required)">
+                 <label class="reg_lab">City </label>
+                <select class="reg_lab  w3-white " name="option">
+                     <option value="" disabled selected>City</option>
+                     <option value="1">Jerusalem</option>
+                     <option value="2">Tulkarm</option>
+                     <option value="3">Nablus</option>
+                     <option value="4">Jenin</option>
+                     <option value="5">Ramallah</option>
+                     <option value="6">Hebron</option>
+
+
+                 </select>
+
+            </span>
+        </div>
+
+            <div class="contactinf">
+                <h3>Contact info</h3>
+                <label class="reg_lab">Email</label>
+                <input class="reg_inp w3-border w3-white" type="email" placeholder="name123@example.com">
+                <label class="reg_lab">Password</label>
+                <input class="reg_inp w3-border w3-white" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" >
+                <label class="reg_lab">Confirm </label>
+                <input class="reg_inp w3-border w3-white" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" >
+                <label class="reg_lab">Phone Nom. </label>
+                <input class="reg_inp w3-border w3-white" type="number" >
+            </div>
+        </div>
+
+            <div>
+                <button class="login" type="submit">Register</button>
+                <button class="login" type="reset">Reset</button>
+            </div>
+        </form>
+
+
+
+</div>
+</div>
+</span>
+<div id="mainDiv">
+
+    <div  class="slideshow-container">
+
+        <div class="mySlides fade">
+            <div class="numbertext">1 / 4</div>
+            <img src="img/img_nature_wide.jpg" style="width:100%">
+            <div class="text">Caption Text</div>
+        </div>
+
+        <div class="mySlides fade">
+            <div class="numbertext">2 / 4</div>
+            <img src="img/img_fjords_wide.jpg" style="width:100%">
+            <div class="text">Caption Two</div>
+        </div>
+
+        <div class="mySlides fade">
+            <div class="numbertext">3 / 4</div>
+            <img src="img/img_mountains_wide.jpg" style="width:100%">
+            <div class="text">Caption Three</div>
+        </div>
+
+        <div class="mySlides fade">
+            <div class="numbertext">4 / 4</div>
+            <img src="img/p1.jpg" style="width:100%">
+            <div class="text">Caption Three</div>
+        </div>
+
+    </div>
+    <br>
+
+    <div style="text-align:center">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+    </div>
+
+
+
+</div>
+<script src="js/main.js"></script>
+<script src="js/head.js"></script>
+
+</body>
+</html>
