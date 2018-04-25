@@ -293,6 +293,7 @@ footer{
     font:bold 16px sans-serif;
    // padding:20px;
     margin-top:80px;
+    position: relative;
     color:#fff;
 }
 
