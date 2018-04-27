@@ -1,0 +1,94 @@
+.adminDiv{
+    font-size: 20px;
+    background-color: #00bcd4;
+    opacity: 0.5;
+    display: block;
+    width: 100%;
+    position: relative;
+}
+
+.adminForm{
+
+    position: relative;
+    width: 100%;
+    margin-top: 150px;
+
+}
+
+
+
+.rowAdminDiv{
+
+  margin-top: 5%;
+}
+
+.colAdminDiv{
+    height: 70px;
+    text-align: center;
+}
+
+.colFixed{
+    height: 30px;
+    text-align: center;
+    font-size: 1.5em;
+    top: 2px;
+    text-align: center;
+    color: white;
+
+}
+
+
+.searchInput{
+
+  width: 90%;
+    font-size: 1.4em;
+    margin: 12px;
+    padding:12px;
+    background-color: white;
+
+}
+
+.spaceAdminDiv{
+    height: 20px;
+    text-align: center;
+    border-bottom: #00bcd4 solid 1px;
+
+}
+.adminTitle{
+    border-bottom: #33383b 2px solid;
+    color: #00bcd4;
+}
+.scrollDiv{
+     max-height: 400px;
+     overflow-y: scroll;
+   border: #00bcd4 2px solid;
+}
+
+.resultOut{
+    width:80%;
+    font-size: 1.6em;
+    margin: 12px;
+    padding:12px;
+    color: white;
+}
+.feebackDiv{
+    font-size: 1.4em;
+    overflow-x: scroll;
+    top: 15px;
+    text-align: center;
+    color: white;
+}
+
+.feebackMassDiv{
+    font-size: 1.4em;
+    overflow-x: scroll;
+    top: 15px;
+    text-align: center;
+    color: white;
+}
+.deleteSubmet{
+    width: 100%;
+    cursor: pointer;
+    height: 30px;
+margin-top: 20px
+}
