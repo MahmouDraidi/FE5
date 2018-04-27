@@ -7,13 +7,19 @@
  */
 
 $msgOfEmpty="";
-$er=$er1=$er2=$er3=$er4=$er5=$er7=$er8=$er9=$er10=$er11="";
+$er=$er3=$er7=$er8=$er9=$er10=$er11=$er12="";
 $msg="";
 $msg1="";
 $servername = "localhost";
 $username = "root";
 $password = "";
 
+//email verification components
+$to="";
+$EmailSubject="Account activation code";
+$msgBody="";
+$headers="From: lazmk"."\r\n";
+$emailSentMsg="";
 
 $conn = new mysqli($servername, $username,"","webproj");
 $sql = "SELECT username FROM usertable WHERE username='max'";
@@ -37,14 +43,25 @@ $sql2 = "delete from test where uname='My mobile number'";
 $result = $conn->query($sql2);*/
 
 
-// Create connection
+
+$myEmail="mahmoud.draidi1997@hotmail.com";
+$mySubject="hello from the other side";
+$myMSG="This is the first access using email";
+/*if(mail($myEmail,$mySubject,$myMSG,'From:bombardment1234@gmail.com')){
+    echo "message sent seccessfully";
+}*/
+
 $conn = new mysqli($servername, $username,"","webproj");
 
-
-if(isset($_POST["register"])) {
+$regUname = $First =$last =$BD =$job =$sex =$buildNom =$street =$city =$regEmail = $mob ="";
+$FBacc="https://www.facebook.com/";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $fbLink = "https://www.facebook.com/";
 
+    if (empty($_POST["first"])) {
+        echo "check if deleted";
+    }
 
     $regUname = ($_POST["Reguname"]);
     $First = $_POST["first"];
@@ -68,38 +85,49 @@ if(isset($_POST["register"])) {
     if ($result->num_rows > 0) {
         // output data of each row
         while($row = $result->fetch_assoc()) {
-
-            if($regUname==$row["username"]){$er="The username  $regUname  is already taken ";}
+            if($regUname==$row["username"]){$er="The username  $regUname  is already taken ";
+                //unset($_POST["register"]);
+            break;
+            }
         }
-
     } else {
         echo "0 results";
     }
 
 
 
+    $sqlEmail = "SELECT email FROM usertable ";
+    $result = $conn->query($sqlEmail);
 
-    $sqlEmail="Select from users WHERE email="."$regEmail";
-    $conn->query($sql);
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            if($regEmail==$row["email"]){$er10="The Email:   $regEmail  is already in use  ";
 
-
-
-
-    if( $last == "" ) {
-        $er2='Enter your Last name';
+                break;
+            }
+        }
     }
-    if( $First == "" ) {
-        $er1='Enter your First name';
+
+    $sqlMob = "SELECT mobileNom FROM usertable ";
+    $result = $conn->query($sqlMob);
+
+
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            if($mob==$row["mobileNom"]){$er12="The mobile nom:   $mob  is already used  ";
+
+                break;
+            }
+        }
     }
+
+
     if( $First == $last ) {
         $er3='First name and last name cannot be same';
     }
-    if( $username == "" ) {
-        $er4='Enter your username';
-    }
-    if( $pw1 == "" ) {
-        $er5='Enter your password';
-    }
+
 
     if( $pw1 != $pw2 ) {
         $er7='Password and confirm password does not match!';
@@ -111,27 +139,36 @@ if(isset($_POST["register"])) {
         $er9='Enter valid email';
     }
 
-    $sqlEmail="Select from users WHERE email="."$regEmail";
-    $conn->query($sql);
-    if($conn->affected_rows > 0) {
-        $er10='The email: '.$regEmail.' is already registered, choose another!';
-    }
-    if ( strpos($FBacc, $fbLink) !== false){
-        $err11="Please paste valid account link";
+
+    if (strpos($FBacc, $fbLink) != 0 ){
+        $er11="Please paste valid account link";
+
 
     }
-    if($regUname==null || $First==null ||  $last==null || $pw1==null || $pw2==null || $BD==null || $job==null || $sex==null || $buildNom==null || $street==null || $city==null || $regEmail==null || $mob==null || $FBacc==null){
+
+    if($regUname==null || $First==null ||  $last==null || $pw1==null || $pw2==null || $BD==null || $job==null || $buildNom==null || $street==null || $city==null || $regEmail==null || $mob==null || $FBacc==null ){
         $msgOfEmpty="Please fill all fields";
     }
- if(($er=="" &&  $er1=="" && $er2=="" && $er3=="" && $er4=="" && $er5=="" && $er7=="" && $er8=="" && $er9=="" && $er10=="" && $er11==""  )) {
+ if(($er=="" && $er3=="" && $er7=="" && $er8=="" && $er9=="" && $er10=="" && $er11=="" &&$er12 =="" &&$msgOfEmpty=="")) {
+$actiCode=rand(100000,999999);
 
-     $sqlInsert = "insert into usertable VALUES('$regUname','$First','$last','$sex','$job','$pw1','$regEmail','$BD','$mob','NO')";
+     $sqlInsert = "insert into usertable VALUES('$regUname','$First','$last','$sex','$job','$pw1','$regEmail','$BD','$mob','No','$FBacc','$actiCode')";
      $result = $conn->query($sqlInsert);
-     echo 'user inserted successfully';
+     $sqlInsert="insert into usertable(FBaccount) VALUES ('$FBacc')WHERE username='$regUname'";
+     $result = $conn->query($sqlInsert);
+
+     $to=$regEmail;
+     $msgBody="Your activation code is: '$actiCode' \n   
+     Type this code in password field for the first time you attend to log in";
+     if(mail($to,$EmailSubject,$msgBody,$headers)){
+         $emailSentMsg= "Check your email you entered to activate your account.";
+         echo "/n message sent";
+     }
+    // header('Location: loginAction.php');
+
 
  }
-
-
+ //else unset($_POST["register"]);
 
     $conn->close();
 
@@ -164,6 +201,8 @@ if(isset($_POST["register"])) {
     <div class=" ">
         <h2 style="text-align: center">Account Info</h2>
         <h3>Personal info</h3>
+        <p>All fields are required</p>
+        <p> <?php echo $msgOfEmpty ?></p>
 
     </div>
 
@@ -172,7 +211,8 @@ if(isset($_POST["register"])) {
         <form method="post">
             <div class="">
                 <label class="reg_lab">Username</label>
-                <input class="reg_inp w3-border w3-white " type="text" placeholder=" username" name="Reguname">
+                <input class="reg_inp w3-border w3-white " type="text" placeholder=" username" name="Reguname"  value="<?php echo $regUname;?>">
+
                 <p class="errorMSG"><?php echo $er ?></p>
 
             </div>
@@ -180,20 +220,20 @@ if(isset($_POST["register"])) {
 
                 <div class="">
                     <label class="reg_lab">First Name</label>
-                    <input class="reg_inp w3-border w3-white" type="text" placeholder="First name" name="first">
-                    <p class="errorMSG"><?php echo $er1  ?></p>
+                    <input class="reg_inp w3-border w3-white" type="text" placeholder="First name" name="first"  value="<?php echo $First;?>">
+                    <p class="errorMSG"></p>
                 </div>
 
                 <div class="">
                     <label class="reg_lab">Last Name</label>
-                    <input class="reg_inp w3-border w3-white" type="text" placeholder="Last name" name="last">
-                    <p class="errorMSG"><?php echo $er2 ?></p>
+                    <input class="reg_inp w3-border w3-white" type="text" placeholder="Last name" name="last"  value="<?php echo $last;?>">
+                    <p class="errorMSG"></p>
                     <p class="errorMSG"><?php echo $er3 ?></p>
                 </div>
                 <div>
                     <label class="reg_lab">Password</label>
                     <input class="reg_inp w3-border w3-white" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" name="RegPW" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" >
-                    <p class="errorMSG"><?php echo $er5?></p>
+                    <p class="errorMSG"></p>
 
                     <p class="errorMSG"><?php echo $er8?></p>
                     <label class="reg_lab">Confirm </label>
@@ -202,11 +242,11 @@ if(isset($_POST["register"])) {
                 </div>
                 <div class="">
                     <label class="reg_lab">Birth date</label>
-                <input class="reg_inp w3-border w3-white" type="Date" name="birthdate">
+                <input class="reg_inp w3-border w3-white" type="Date" name="birthdate"  value="<?php echo $BD;?>">
                 </div>
                 <div class="">
                     <label class="reg_lab">Job</label>
-                    <input list="jobs" name="Job">
+                    <input list="jobs" name="Job"  value="<?php echo $job;?>">
                     <datalist id="jobs">
                         <option value="Engineer">
                         <option value="Police man">
@@ -223,11 +263,11 @@ if(isset($_POST["register"])) {
                 <div class="sexdiv">
 
                     <label class="reg_lab">Sex</label>
-                    <input class="w3-radio" type="radio" name="gender" value="male" checked >
 
-                    <label class="reg_lab">Male</label>
-                    <input class="w3-radio" type="radio" name="gender" value="female">
-                    <label class="reg_lab">Female</label>
+
+                    <label class="reg_lab"><input class="w3-radio" type="radio" name="gender" value="male" checked >  Male</label>
+
+                    <label class="reg_lab"><input class="w3-radio" type="radio" name="gender" value="female"> Female</label>
                 </div>
 
 
@@ -239,16 +279,16 @@ if(isset($_POST["register"])) {
                     <span style="margin-top: 10px">
 
                         <label class="reg_lab">Building Nom.</label>
-                        <input class="reg_inp1 w3-border w3-white" type="text" placeholder=" Building Nom. (required)" name="BuildingNom">
-
-
+                        <input class="reg_inp1 w3-border w3-white" type="text"  value="<?php echo $buildNom;?>" placeholder=" Building Nom. (required)" name="BuildingNom">
+                        <div>
                         <label class="reg_lab">Street </label>
-                        <input class="reg_inp1 w3-border w3-white" type="text" placeholder=" Street (required)" name="Street">
+                        <input class="reg_inp1 w3-border w3-white" type="text"  value="<?php echo $street;?>" placeholder=" Street (required)" name="Street">
+                        </div>
 
-
+                        <div>
                         <label class="reg_lab">City </label>
 
-                           <input list="cities" name="city">
+                           <input list="cities" name="city"  value="<?php echo $city;?>">
                          <datalist id="cities">
                         <option value="Tulkarm">
                         <option value="Jenin">
@@ -258,22 +298,24 @@ if(isset($_POST["register"])) {
                          <option value="Ramallah">
                          <option value="Qalqilieh">
                     </datalist>
+                        </div>
                     </span>
                 </div>
 
                 <div class="contactinf">
                     <h3>Contact info</h3>
                     <label class="reg_lab">Email</label>
-                    <input class="reg_inp w3-border w3-white" type="email" placeholder="name123@example.com" name="RegEmail">
+                    <input class="reg_inp w3-border w3-white" type="email" placeholder="name123@example.com" value="<?php echo $regEmail;?>" name="RegEmail">
                     <p class="errorMSG"><?php echo $er9 ?></p>
                     <p class="errorMSG"><?php echo $er10 ?></p>
                     <label class="reg_lab">Phone Nom. </label>
-                    <input class="reg_inp w3-border w3-white" type="number" name="mobile">
+                    <input class="reg_inp w3-border w3-white" type="number" name="mobile"  value="<?php echo $mob;?>">
+                   <p class="errorMSG"> <?php echo $er12 ?></p>
                 </div>
 
 
                 <label class="reg_lab">Facebook </label>
-                <input class="reg_inp w3-border w3-white" type="text" name="facebook" value="https://www.facebook.com/...">
+                <input class="reg_inp w3-border w3-white" type="text" name="facebook" value="<?php echo $FBacc;?>">
                 <p class="errorMSG"><?php echo $er11 ?></p>
 
 
@@ -282,7 +324,7 @@ if(isset($_POST["register"])) {
             </div>
     </div>
     <div>
-        <?php echo $msgOfEmpty ?>
+
     </div>
 
             <br><br>

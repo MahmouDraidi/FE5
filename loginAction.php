@@ -7,43 +7,77 @@
  */
 
 
+$warninMSG="";
+$servername = "localhost";
+$DBusername = "root";
+$password = "";
+$conn = new mysqli($servername, $DBusername,"","webproj");
 
 
-$sql = "SELECT username FROM usertable";
-$result = $conn->query($sql);
-$x="max";
+
+/*
 if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
         echo "id: " . $row["username"]. "<br>";
         if($x==$row["username"]){echo "found in DB";}
     }
-} else {
-    echo "0 results";
 }
+else {
+    echo "0 results";
+}*/
 /*$tes1="My mobile number";
 $tes2="0595403748";
 $sql2 = "delete from test where uname='My mobile number'";
 
 $result = $conn->query($sql2);*/
-$conn->close();
+
 // Check connection
+$actiCode="";
+$userNotFoundMsg="";
+$uname="";
+$activateMSG="";
+$found="";
+if(isset($_POST["submit"])) {
+
+    $storedPw = "";
+    $uname = $_POST["name"];
+    $pw = $_POST["pw"];
+    $sql = "SELECT * FROM usertable WHERE username='$uname'";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        // output data of each row
+        $found = "y";
+        while ($row = $result->fetch_assoc()) {
+
+            $storedPw = $row["pw"];
+
+            if ($row["Verified"] == "No") {
+                $activateMSG = "Please enter activation code!";
+                $actiCode = $row["activationCode"];
 
 
+            }
+        }
+    } else $warninMSG= "NO users found with this username";
 
-if(isset($_POST["submit"])){
-    $uname=$_POST["name"];
-    $pw=$_POST["pw"];
-    if($uname=="max@d" && $pw==123 ){
-            $msg="You have succefully logged in";
-    }
-    else{
-        $msg="Ooooooooops";
+
+    if ($found == "y" && $actiCode != "") {
+        if ($actiCode == $pw) {
+            $sql = "UPDATE usertable SET Verified='Yes' WHERE username='$uname'";
+            $result = $conn->query($sql);
+            $warninMSG= "account is activated";
+
+        } else $warninMSG= "Wrong activation code";
+
+    } elseif ($found == "y" && $actiCode == "") {
+        if ($storedPw == $pw) {
+            header('Location:loggedIn.html');
+        }else $warninMSG="Incorrect password or username ";
+
     }
 
 }
-
-
 
 
 
@@ -54,7 +88,7 @@ function test_data($data) {
     return $data;
 }
 
-
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -72,7 +106,7 @@ function test_data($data) {
 
 
 </head>
-<body style="background-image:url('img/whiteimg.jpg');background-position: left top; background-repeat: no-repeat; background-attachment: fixed;">
+<body onload="openMSG()" style="background-image:url('img/whiteimg.jpg');background-position: left top; background-repeat: no-repeat; background-attachment: fixed;">
 
 
 <form action="loginAction.php" method="post">
@@ -84,25 +118,31 @@ function test_data($data) {
             <img  style="border-radius: 50%; border: 1px solid white;" width="120px " height="120px"  src="img/userimg1.png">
 
         </div>
-        <input type="text" placeholder="Enter your email or username" name="name">
+        <input type="text" placeholder="Enter your email or username" name="name" value="<?php echo $uname?>">
         <i class="fa  fa-at fa-fw icon"></i>
 
         <input type="password" placeholder="Password" name="pw">
         <i class="fa fa-key fa-fw icon1"></i>
 
         <a id="link" href="#">Reset password</a>
-        <button class="loginB" type="submit" name="submit" >Log in</button>
+        <button id="loginButton" class="loginB" type="submit" name="submit" >Log in</button>
 
         <div class="reg">
         <p style="color: white;display: inline  ">Not a member of Lazmk family?</p>  <a  id="reglink" href="Registration.php">Register</a>
         </div>
 
 
+
+
     </div>                                                       <!--22222-->
 
 </div>
+
+
+
+
 </form><!--11111-->
-<p><?php echo $msg  ?></p>
+
 <!--/////////////////////////////////////reg reg reg reg reg reg reg reg reg reg reg///////////////////////////////////////////////////-->
 
 
@@ -114,29 +154,56 @@ function test_data($data) {
         <i id="editIcon" class="fa fa-arrow-right "></i>
     </a>
 </div>
+<!--------------------------------------------------------------------------------------------------------------------->
+<!-- The Modal -->
+<div id="myModal" class="modal">
 
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>Oops! Something went wrong</h2>
+        </div>
+        <div class="modal-body">
+            <p><?php echo $warninMSG ?></p>
+            <p></p>
+        </div>
+
+    </div>
+
+</div>
 
 
 <script src="js/jquery_admin.js"></script>
 <script>
-    function fun(num){
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    function openMSG() {
+        var x="<?php echo $warninMSG?>";
+        if(x!="")
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
 
 
-        if(num==0){
-            document.getElementById("regSpan").style.display="none";
-            document.getElementById("par").style.display="block"
-        }
-        else {
-            document.getElementById("regSpan").style.display="block";
-            document.getElementById("par").style.display="none";
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
         }
     }
-    window.onclick = function(event) {
-        if (event.target == regSpan) {
-            regSpan.style.display = "none";
-            par.style.display="block";
-
-        }}
 </script>
 </body>
 </html>
