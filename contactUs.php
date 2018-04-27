@@ -16,7 +16,8 @@ if ($name && $email && $phone && $message){
 
    if ($result)$done=true;
 
-} }
+}
+}
 
 
 ?>

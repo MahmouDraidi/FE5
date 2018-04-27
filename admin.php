@@ -296,10 +296,11 @@ $sql= "select * from feedback" ;
         
                 </div>
                
-                  
+                   
                    </div>         ";
 
-} }
+}
+       }
                 ?>
 
             </div>
