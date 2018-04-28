@@ -11,6 +11,9 @@ function myFunction(x) {
         document.getElementById("bar3").style.backgroundColor="red";
         document.getElementById("bar1").style.boxShadow="0px 0px 20px white";
         document.getElementById("bar3").style.boxShadow="0px 0px 20px white";
+        document.getElementById("bar1").style.transform="rotate(-45deg) translate(-10px, 5px)";
+        document.getElementById("bar2").style.opacity="0";
+        document.getElementById("bar3").style.transform="rotate(45deg) translate(-8px, -8px)";
 
 
 
@@ -22,6 +25,10 @@ function myFunction(x) {
         document.getElementById("bar3").style.backgroundColor="";
         document.getElementById("bar1").style.boxShadow="";
         document.getElementById("bar3").style.boxShadow="";
+        document.getElementById("bar1").style.transform="rotate(0deg) translate(0px,0px)";
+        document.getElementById("bar2").style.opacity="1";
+        document.getElementById("bar3").style.transform="rotate(0deg) translate(0px,0px)";
+
 
 
     }

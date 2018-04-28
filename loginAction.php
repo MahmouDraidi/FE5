@@ -1,19 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: smilecom
- * Date: 2018-04-20
- * Time: 2:19 PM
- */
 
+
+session_start();
 
 $warninMSG="";
 $servername = "localhost";
 $DBusername = "root";
 $password = "";
 $conn = new mysqli($servername, $DBusername,"","webproj");
-
-
+$fromReg=isset($_SESSION["FinishedReg"]);
+$modHead="";
 
 /*
 if ($result->num_rows > 0) {
@@ -38,6 +34,10 @@ $userNotFoundMsg="";
 $uname="";
 $activateMSG="";
 $found="";
+
+
+
+
 if(isset($_POST["submit"])) {
 
     $storedPw = "";
@@ -59,21 +59,41 @@ if(isset($_POST["submit"])) {
 
             }
         }
-    } else $warninMSG= "NO users found with this username";
+    } else {
+        $modHead="Warning!";
+        $warninMSG= "NO users found with this username";
+    }
 
 
     if ($found == "y" && $actiCode != "") {
         if ($actiCode == $pw) {
             $sql = "UPDATE usertable SET Verified='Yes' WHERE username='$uname'";
             $result = $conn->query($sql);
-            $warninMSG= "account is activated";
+            $modHead="Welcome $uname";
+            $warninMSG= "Account is activated \n You can log in using your password next time.";
+            $_SESSION["USERNAME"]=$uname;
+            header( "refresh:5;url=loggedUser.php" );
 
-        } else $warninMSG= "Wrong activation code";
+        } else {
+            $modHead="Account not activated yet";
+            $warninMSG= "Type activation code you received in email in password field.";
+        }
 
     } elseif ($found == "y" && $actiCode == "") {
+
         if ($storedPw == $pw) {
-            header('Location:loggedIn.html');
-        }else $warninMSG="Incorrect password or username ";
+           // header('Location:loggedIn.html');
+            $modHead="Welcome $uname";
+            $warninMSG= "We hope you enjoy surfing Lazmk website";
+            $_SESSION["USERNAME"]=$uname;
+            header( "refresh:5;url=loggedUser.php" );
+
+
+        }
+        else {
+            $modHead="Login error";
+            $warninMSG="Incorrect password or username ";
+        }
 
     }
 
@@ -118,13 +138,13 @@ $conn->close();
             <img  style="border-radius: 50%; border: 1px solid white;" width="120px " height="120px"  src="img/userimg1.png">
 
         </div>
-        <input type="text" placeholder="Enter your email or username" name="name" value="<?php echo $uname?>">
+        <input type="text" placeholder="Enter your username" name="name" value="<?php echo $uname?>">
         <i class="fa  fa-at fa-fw icon"></i>
 
-        <input type="password" placeholder="Password" name="pw">
+        <input type="password" placeholder="<?php if($fromReg==true){echo 'Activation Code';unset($_SESSION["FinishedReg"]);}else echo 'Password' ?>" name="pw">
         <i class="fa fa-key fa-fw icon1"></i>
 
-        <a id="link" href="#">Reset password</a>
+        <a id="link" href="resertPW.php">Forgot password?</a>
         <button id="loginButton" class="loginB" type="submit" name="submit" >Log in</button>
 
         <div class="reg">
@@ -146,11 +166,11 @@ $conn->close();
 <!--/////////////////////////////////////reg reg reg reg reg reg reg reg reg reg reg///////////////////////////////////////////////////-->
 
 
-<script src="js/jquery-3.2.1.min.js"></script>
+
 
 
 <div id="editDiv" onclick="Prof_editProf()">
-    <a href="noLogin.html">
+    <a href="loginAction.php">
         <i id="editIcon" class="fa fa-arrow-right "></i>
     </a>
 </div>
@@ -162,7 +182,7 @@ $conn->close();
     <div class="modal-content">
         <div class="modal-header">
             <span class="close">&times;</span>
-            <h2>Oops! Something went wrong</h2>
+            <h2><?php echo $modHead ?></h2>
         </div>
         <div class="modal-body">
             <p><?php echo $warninMSG ?></p>
@@ -173,7 +193,7 @@ $conn->close();
 
 </div>
 
-
+<script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/jquery_admin.js"></script>
 <script>
     // Get the modal
@@ -187,7 +207,7 @@ $conn->close();
 
     // When the user clicks the button, open the modal
     function openMSG() {
-        var x="<?php echo $warninMSG?>";
+        var x="<?php echo $warninMSG ?>";
         if(x!="")
         modal.style.display = "block";
     }

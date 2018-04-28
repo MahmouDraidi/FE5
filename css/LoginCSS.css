@@ -211,24 +211,26 @@ display: inline;
 /* reg reg reg reg reg reg reg reg reg reg reg reg reg */
 .mainregdiv{
     display: block;
-    width: 40%;
+    width: 50%;
     height: 100%;
     background-color: #fafafa;
     margin-top: 105px;
-    margin-left: 30%;
+    margin:auto;
     padding: 2%;
     border-radius: 10%;
     position: relative;
     box-shadow: #00bcd4 0 0 20px;
 }
 .reg_lab{
-    font-size: 1.2em;
-    margin: 12px;
+    font-size: 1.25em;
     padding: 5px;
-    width: 112px;
+
+}
+#reCaptcha{
+    width: 100%;
 }
 .reg_inp{
-    width: 70%;
+
 //color: red;
     height: 30px;
     border-radius: 10px;
@@ -236,7 +238,7 @@ display: inline;
     outline: none;
 }
 .reg_inp1{
-    width: 40%;
+
 //color: red;
     height: 30px;
     border-radius: 10px;
@@ -250,8 +252,8 @@ display: inline;
     border-bottom: 1px solid dimgray;
 }
 .adresslabspan{
-    height: 150px;
-    float: left;
+
+
     margin-top: -7px;
 
 }
@@ -293,7 +295,7 @@ display: inline;
 
 #regSpan{
 
-    background-color: rgba(0,0,0,.3);
+
     width: 100%;
     position: absolute;
 }
@@ -318,6 +320,7 @@ display: inline;
     cursor: pointer;
     background: var(--main-site-col);
     //border: 1px solid yellow;
+
 }
 #editDiv:hover #editIcon{
     color:white;
@@ -333,7 +336,7 @@ display: inline;
 /*dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd*/
 /* The Modal (background) */
 .modal {
-    display: block; /* Hidden by default */
+    display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     left: 0;
@@ -398,8 +401,16 @@ display: inline;
     color: white;
 }
 
+
+@media only screen and (max-width: 600px) {
+    .mainregdiv{
+        width:80%;
+
+    }
+}
+
 /* Add Animation */
-@-webkit-keyframes slideIn {
+/*@-webkit-keyframes slideIn {
     from {bottom: -300px; opacity: 0}
     to {bottom: 0; opacity: 1}
 }
@@ -417,4 +428,23 @@ display: inline;
 @keyframes fadeIn {
     from {opacity: 0}
     to {opacity: 1}
+}*/
+#moe{
+    font-size: 1.5em;
+    animation:alarm ;
+    transition: .8s;
+    animation-name: alarm;
+    animation-duration: 1s;
+    animation-delay: .1s;
+    animation-iteration-count:5;
+}
+@keyframes alarm {
+    from {color: red;}
+    to {color: white;}
+}
+#req1{
+    color: red;
+    font-size: large;
+    position: relative;
+    text-align: right;
 }

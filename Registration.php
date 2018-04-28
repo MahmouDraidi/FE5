@@ -1,11 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: smilecom
- * Date: 2018-04-23
- * Time: 6:46 PM
- */
 
+
+session_start();
 $msgOfEmpty="";
 $er=$er3=$er7=$er8=$er9=$er10=$er11=$er12="";
 $msg="";
@@ -13,7 +9,7 @@ $msg1="";
 $servername = "localhost";
 $username = "root";
 $password = "";
-
+$regSuccess="";
 //email verification components
 $to="";
 $EmailSubject="Account activation code";
@@ -21,26 +17,12 @@ $msgBody="";
 $headers="From: lazmk"."\r\n";
 $emailSentMsg="";
 
-$conn = new mysqli($servername, $username,"","webproj");
-$sql = "SELECT username FROM usertable WHERE username='max'";
-$result = $conn->query($sql);
 
-/* ($result->num_rows > 0) {
-    // output data of each row
-    while($row = $result->fetch_assoc()) {
-        echo "id: " . $row["username"]. "<br>";
-        if($x==$row["username"]){echo "found in DB";}
-    }
 
-} else {
-    echo "0 results";
-}*/
 
-/*$tes1="My mobile number";
-$tes2="0595403748";
-$sql2 = "delete from test where uname='My mobile number'";
 
-$result = $conn->query($sql2);*/
+
+
 
 
 
@@ -59,9 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $fbLink = "https://www.facebook.com/";
 
-    if (empty($_POST["first"])) {
-        echo "check if deleted";
-    }
+
 
     $regUname = ($_POST["Reguname"]);
     $First = $_POST["first"];
@@ -90,10 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             break;
             }
         }
-    } else {
-        echo "0 results";
     }
-
 
 
     $sqlEmail = "SELECT email FROM usertable ";
@@ -140,8 +117,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 
-    if (strpos($FBacc, $fbLink) != 0 ){
-        $er11="Please paste valid account link";
+    if (!(strpos($FBacc, $fbLink) ==0) && filter_var($FBacc, FILTER_VALIDATE_URL) ){
+        $er11="Please paste url of your account!";
 
 
     }
@@ -149,31 +126,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if($regUname==null || $First==null ||  $last==null || $pw1==null || $pw2==null || $BD==null || $job==null || $buildNom==null || $street==null || $city==null || $regEmail==null || $mob==null || $FBacc==null ){
         $msgOfEmpty="Please fill all fields";
     }
+
+
+    /* finish registration */
  if(($er=="" && $er3=="" && $er7=="" && $er8=="" && $er9=="" && $er10=="" && $er11=="" &&$er12 =="" &&$msgOfEmpty=="")) {
 $actiCode=rand(100000,999999);
+     $_SESSION["FinishedReg"] = "Yeah";
 
-     $sqlInsert = "insert into usertable VALUES('$regUname','$First','$last','$sex','$job','$pw1','$regEmail','$BD','$mob','No','$FBacc','$actiCode')";
+
+     $sqlInsert = "insert into usertable VALUES('$regUname','$First','$last','$sex','$job','$pw1','$regEmail','$BD','$mob','No','$FBacc','$actiCode','#00bcd4')";
      $result = $conn->query($sqlInsert);
-     $sqlInsert="insert into usertable(FBaccount) VALUES ('$FBacc')WHERE username='$regUname'";
+//     $sqlInsert="insert into usertable(FBaccount) VALUES ('$FBacc')WHERE username='$regUname'";
+
      $result = $conn->query($sqlInsert);
+     $sqlInsert="insert into useradress VALUES ('$regUname','$buildNom','$street','$city')";
+     $result = $conn->query($sqlInsert);
+
+     $sqlInsert="insert into userimg VALUES ('$regUname','DefaultUserImg.png')";
+     $result = $conn->query($sqlInsert);
+
 
      $to=$regEmail;
      $msgBody="Your activation code is: '$actiCode' \n   
      Type this code in password field for the first time you attend to log in";
      if(mail($to,$EmailSubject,$msgBody,$headers)){
+
          $emailSentMsg= "Check your email you entered to activate your account.";
-         echo "/n message sent";
+         header( "refresh:5;url=loginAction.php" );
+         $regSuccess="Your account has been created! <br> Check your email to get it activated.";
+
      }
-    // header('Location: loginAction.php');
 
 
  }
- //else unset($_POST["register"]);
+
 
     $conn->close();
 
-  //  if (strpos($a, 'are') !== false)
-      //  echo 'true';
+
 }
 ?>
 
@@ -192,7 +182,7 @@ $actiCode=rand(100000,999999);
 
 
 </head>
-<body style="background-image:url('img/whiteimg.jpg');background-position: left top; background-repeat: no-repeat; background-attachment: fixed;">
+<body onload="openMSG()" style="background-image:url('img/whiteimg.jpg');background-position: left top; background-repeat: no-repeat; background-attachment: fixed;">
 
 
 <span id="regSpan"  >
@@ -200,53 +190,54 @@ $actiCode=rand(100000,999999);
 
     <div class=" ">
         <h2 style="text-align: center">Account Info</h2>
-        <h3>Personal info</h3>
-        <p>All fields are required</p>
-        <p> <?php echo $msgOfEmpty ?></p>
+        <h3>Personal info</h3><p style="display: <?php if($msgOfEmpty!="")echo 'none' ?>" id="req1">All fields are required</p>
+        <p id="moe"> <?php echo $msgOfEmpty ?></p>
 
     </div>
 
 
     <div class="">
         <form method="post">
-            <div class="">
-                <label class="reg_lab">Username</label>
-                <input class="reg_inp w3-border w3-white " type="text" placeholder=" username" name="Reguname"  value="<?php echo $regUname;?>">
+            <div style="margin-top: 10px" class="w3-row">
+                <label class="reg_lab w3-col s4">Username</label>
+                <input class="reg_inp w3-border w3-white w3-col s8 " type="text" placeholder=" username" name="Reguname"  value="<?php echo $regUname;?>">
 
                 <p class="errorMSG"><?php echo $er ?></p>
 
             </div>
-            <div class=" ">
+            <div style="margin-top: 10px" class=" w3-row">
 
-                <div class="">
-                    <label class="reg_lab">First Name</label>
-                    <input class="reg_inp w3-border w3-white" type="text" placeholder="First name" name="first"  value="<?php echo $First;?>">
+                <div style="margin-top: 10px" class="w3-row">
+                    <label class="reg_lab w3-col s4">First Name</label>
+                    <input class="reg_inp w3-border w3-white w3-col s8" type="text" placeholder="First name" name="first"  value="<?php echo $First;?>">
                     <p class="errorMSG"></p>
                 </div>
 
-                <div class="">
-                    <label class="reg_lab">Last Name</label>
-                    <input class="reg_inp w3-border w3-white" type="text" placeholder="Last name" name="last"  value="<?php echo $last;?>">
+                <div style="margin-top: 10px" class="w3-row">
+                    <label class="reg_lab w3-col s4 ">Last Name</label>
+                    <input class="reg_inp w3-border w3-white w3-col s8" type="text" placeholder="Last name" name="last"  value="<?php echo $last;?>">
                     <p class="errorMSG"></p>
                     <p class="errorMSG"><?php echo $er3 ?></p>
                 </div>
-                <div>
-                    <label class="reg_lab">Password</label>
-                    <input class="reg_inp w3-border w3-white" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" name="RegPW" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" >
+                <div style="margin-top: 10px" class="w3-row">
+                    <label class="reg_lab w3-col s4">Password</label>
+                    <input class="reg_inp w3-border w3-white w3-col s8" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" name="RegPW" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" >
                     <p class="errorMSG"></p>
-
+                </div>
+                <div style="margin-top: 10px">
                     <p class="errorMSG"><?php echo $er8?></p>
-                    <label class="reg_lab">Confirm </label>
-                    <input class="reg_inp w3-border w3-white" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" name="confPW" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" >
+                    <label class="reg_lab w3-col s4">Confirm </label>
+
+                    <input class="reg_inp w3-border w3-white w3-col s8 " type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" name="confPW" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" >
                     <p class="errorMSG"><?php echo $er7?></p>
                 </div>
-                <div class="">
-                    <label class="reg_lab">Birth date</label>
-                <input class="reg_inp w3-border w3-white" type="Date" name="birthdate"  value="<?php echo $BD;?>">
+                <div style="margin-top: 10px" class="w3-row">
+                    <label class="reg_lab w3-col s4">Birth date</label>
+                <input class="reg_inp w3-border w3-white w3-col s8" type="Date" name="birthdate"  value="<?php echo $BD;?>">
                 </div>
-                <div class="">
-                    <label class="reg_lab">Job</label>
-                    <input list="jobs" name="Job"  value="<?php echo $job;?>">
+                <div style="margin-top: 10px" class="w3-row">
+                    <label class="reg_lab w3-col s4">Job</label>
+                    <input class="w3-col s8 reg_inp" list="jobs" name="Job"  value="<?php echo $job;?>">
                     <datalist id="jobs">
                         <option value="Engineer">
                         <option value="Police man">
@@ -260,63 +251,86 @@ $actiCode=rand(100000,999999);
 
 
 
-                <div class="sexdiv">
+                <div style="margin-top: 10px" class="sexdiv w3-row">
 
-                    <label class="reg_lab">Sex</label>
+                    <label class="reg_lab w3-col s4">
+                        <p>Sex</p>
+
+                     </label>
+                    <label class="w3-col s4 "><input class="w3-radio" type="radio" name="gender" value="male" checked >  Male</label>
+
+                    <label class="w3-col s4"><input class="w3-radio" type="radio" name="gender" value="female"> Female</label>
 
 
-                    <label class="reg_lab"><input class="w3-radio" type="radio" name="gender" value="male" checked >  Male</label>
 
-                    <label class="reg_lab"><input class="w3-radio" type="radio" name="gender" value="female"> Female</label>
                 </div>
 
 
-                <div class ="addressdiv">
+                <div style="margin: 5px 0px;" class ="addressdiv w3-row">
                     <span class="adresslabspan">
 
                         <h3>Adress</h3>
                     </span>
                     <span style="margin-top: 10px">
 
-                        <label class="reg_lab">Building Nom.</label>
-                        <input class="reg_inp1 w3-border w3-white" type="text"  value="<?php echo $buildNom;?>" placeholder=" Building Nom. (required)" name="BuildingNom">
-                        <div>
-                        <label class="reg_lab">Street </label>
-                        <input class="reg_inp1 w3-border w3-white" type="text"  value="<?php echo $street;?>" placeholder=" Street (required)" name="Street">
+                         <div style="margin: 5px 0px;" class="w3-row">
+                        <label class="w3-col m4 reg_lab ">Building Nom.
+                         </label>
+                            <input class="reg_inp w3-border w3-white w3-col m8" type="text"  value="<?php echo $buildNom;?>" placeholder=" Building Nom. (required)" name="BuildingNom">
+
+                         </div>
+
+                        <div style="margin: 5px 0px;" class="w3-row">
+                        <label  class="reg_lab w3-col m4">Street
+                         </label>
+                            <input class="reg_inp w3-border w3-white w3-col m8" type="text"  value="<?php echo $street;?>" placeholder=" Street (required)" name="Street">
+
                         </div>
+                        <div class="w3-row" style="margin: 10px 0px;">
+                            <label class="reg_lab w3-col m4">City </label>
 
-                        <div>
-                        <label class="reg_lab">City </label>
+                            <input class="w3-col m8 reg_inp" list="cities" name="city"  value="<?php echo $city;?>">
+                            <datalist id="cities">
+                                <option value="Tulkarm">
+                                <option value="Jenin">
+                                <option value="Nablus">
+                                <option value="Jerusalem">
+                                <option value="Hebron">
+                                <option value="Ramallah">
+                                <option value="Qalqilieh">
+                            </datalist>
 
-                           <input list="cities" name="city"  value="<?php echo $city;?>">
-                         <datalist id="cities">
-                        <option value="Tulkarm">
-                        <option value="Jenin">
-                        <option value="Nablus">
-                        <option value="Jerusalem">
-                         <option value="Hebron">
-                         <option value="Ramallah">
-                         <option value="Qalqilieh">
-                    </datalist>
                         </div>
                     </span>
                 </div>
 
-                <div class="contactinf">
+                <div class="contactinf w3-row">
                     <h3>Contact info</h3>
-                    <label class="reg_lab">Email</label>
-                    <input class="reg_inp w3-border w3-white" type="email" placeholder="name123@example.com" value="<?php echo $regEmail;?>" name="RegEmail">
+
+                    <div class="w3-row" style="margin: 10px 0px;">
+                    <label class="reg_lab w3-col m4">Email</label>
+                    <input class="reg_inp1 w3-border w3-white w3-col m8" type="email" placeholder="name123@example.com" value="<?php echo $regEmail;?>" name="RegEmail">
                     <p class="errorMSG"><?php echo $er9 ?></p>
                     <p class="errorMSG"><?php echo $er10 ?></p>
-                    <label class="reg_lab">Phone Nom. </label>
-                    <input class="reg_inp w3-border w3-white" type="number" name="mobile"  value="<?php echo $mob;?>">
+                    </div>
+
+
+
+
+                    <div class="w3-row" style="margin:10px 0px;">
+                    <label class="reg_lab w3-col m4">Phone Nom.</label>
+                    <input class="reg_inp w3-border w3-white w3-col m8" type="number" name="mobile"  value="<?php echo $mob;?>">
                    <p class="errorMSG"> <?php echo $er12 ?></p>
+                    </div>
+
+                    <div class="w3-row" style="margin: 10px 0px;">
+                        <label class="reg_lab w3-col m4">Facebook</label>
+                        <input class="reg_inp w3-border w3-white w3-col m8" type="text" name="facebook" value="<?php echo $FBacc;?>">
+                        <p class="errorMSG"><?php echo $er11 ?></p>
+                    </div>
                 </div>
 
 
-                <label class="reg_lab">Facebook </label>
-                <input class="reg_inp w3-border w3-white" type="text" name="facebook" value="<?php echo $FBacc;?>">
-                <p class="errorMSG"><?php echo $er11 ?></p>
 
 
 
@@ -328,15 +342,20 @@ $actiCode=rand(100000,999999);
     </div>
 
             <br><br>
+    <div id="reCaptcha">
+    <div  class="g-recaptcha" data-sitekey="6Lfo9lUUAAAAAHsKrH9VSOhUxsEKnwEA8JNzihof">
+    </div>
 
+    </div>
+<br><br>
 
     <div>
 
-        <button class="login" type="submit" name="register" >Register</button>
+        <button class="login w3-col s5 " type="submit" name="register" >Register</button>
 
-        <button class="login" type="reset">Reset</button>
+        <button class="login w3-col s5" type="reset">Reset</button>
 
-    </div>
+    </div><br><br><br>
     </form>
 
 </div>
@@ -346,17 +365,67 @@ $actiCode=rand(100000,999999);
 
 </span>
 
+<!-- The Modal -->
+<div id="myModal" class="modal">
 
-<script src="js/jquery-3.2.1.min.js"></script>
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span id="modSpan" class="close">&times;</span>
+            <h2>Welcome to 'Lazmk?' family</h2>
+        </div>
+        <div class="modal-body">
+            <p><?php echo $regSuccess ?></p>
+            <p></p>
+        </div>
+
+    </div>
+
+</div>
+
 
 
 <div id="editDiv" onclick="Prof_editProf()">
-    <a href="noLogin.html">
+    <a href="loginAction.php">
         <i id="editIcon" class="fa fa-arrow-right "></i>
     </a>
 </div>
 
 
+
+
+<script src='https://www.google.com/recaptcha/api.js'></script>
+
+<script>
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    function openMSG() {
+        var x="<?php echo $regSuccess?>";
+        if(x!="")
+            modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    modSpan.onclick = function() {
+        modal.style.display = "none";
+    }
+
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
 
 
 </body>

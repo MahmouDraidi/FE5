@@ -1,12 +1,12 @@
 
 
 #addMenu{
-    display: inline-block;
-//background-color: tomato;
-// opacity: .3;
-    margin: 110px 0 0 125px;
+    position: relative;
+    z-index: 0;
+    /* display: inline-block; */
 
-    border-left: 3px solid var(--main-site-col);
+
+
 }
 
 .add_lab{
