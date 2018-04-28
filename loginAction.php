@@ -72,7 +72,7 @@ if(isset($_POST["submit"])) {
             $modHead="Welcome $uname";
             $warninMSG= "Account is activated \n You can log in using your password next time.";
             $_SESSION["USERNAME"]=$uname;
-            header( "refresh:5;url=loggedUser.php" );
+            header( "refresh:5;url=main.php" );
 
         } else {
             $modHead="Account not activated yet";
@@ -86,7 +86,7 @@ if(isset($_POST["submit"])) {
             $modHead="Welcome $uname";
             $warninMSG= "We hope you enjoy surfing Lazmk website";
             $_SESSION["USERNAME"]=$uname;
-            header( "refresh:5;url=loggedUser.php" );
+            header( "refresh:5;url=main.php" );
 
 
         }
@@ -170,7 +170,7 @@ $conn->close();
 
 
 <div id="editDiv" onclick="Prof_editProf()">
-    <a href="loginAction.php">
+    <a href="main.php">
         <i id="editIcon" class="fa fa-arrow-right "></i>
     </a>
 </div>

@@ -104,7 +104,7 @@ $conn->close();
 <div id="sss" class="sidediv" onmouseleave="myFunction(this)" >
     <ul class="asidelist">
         <li title="Home" class="home" data-hint="Home">
-            <a  id="chosen" href="#" class="aside__link">
+            <a id="chosen" href="main.php" class="aside__link">
                 <i id="chosenicon" class="sideic fa fa-home "style="font-size: 32px;"></i>
                 <p id="chosentext"  class="asidetext w3-animate-bottom">Home</p>
             </a>
@@ -132,13 +132,10 @@ $conn->close();
         </li>
 
         <li class="home" data-hint="Home">
-
-
             <a href="<?php if($uname==""){echo "ioginAction.php";}else echo "Logout.php" ?>" class="aside__link" style="<?php if($uname==""){echo "background: tomato";}?>">
                 <i style="<?php if($uname==""){echo "color: white";}?>" class="sideic  glyphicon glyphicon-log-out w3-xlarge <?php if($uname=="")echo "w3-spin"?>"></i>
                 <p style="<?php if($uname==""){echo "color: white";}?>" class="asidetext w3-animate-bottom"><?php if($uname=="")echo "Sign in"; else echo "Sign Out" ?></p>
             </a>
-
         </li>
 
 

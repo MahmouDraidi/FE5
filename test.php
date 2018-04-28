@@ -7,12 +7,14 @@
  */
 session_start();
 $_SESSION["FinishedReg"]='yeah';
-/*$conn= new mysqli('localhost','root','','webproj');
-$sqlInsert="insert into product VALUES ('','maxxx','proooname','2500','2','see','yooo','im1','im2','im3')";
-$res = $conn->query($sqlInsert);
+$conn= new mysqli('localhost','root','','webproj');
+//$sqlInsert="insert into product VALUES ('','maxxx','proooname','2500','2','see','yooo','im1','im2','im3')";
+//$res = $conn->query($sqlInsert);
 //$res=$conn->query($sql);
-if($res->num_rows >0)echo 'Hi, you fuckingly succeeded\n';;
-*/
+
+$sql="insert into feedback values('','baba','dfdf','fgd','fdgdff')";
+$conn->query($sql);
+
 /*
 $to="+972595403748@txtlocal.co.uk";
 $EmailSubject="Hey bro";
@@ -54,7 +56,7 @@ session_destroy();*/
 $target="productImages/";
   // If upload button is clicked ...
   if (isset($_POST['upload'])) {
-      header( "refresh:5;url=loggedUser.php" );
+      header( "refresh:5;url=main.php" );
   	// Get image name
   	$image = $_FILES['image']['name'];
   	// Get text

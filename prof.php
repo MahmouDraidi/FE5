@@ -79,7 +79,7 @@
 <div id="sss" class="sidediv" >
     <ul class="asidelist">
         <li title="Home" class="home" data-hint="Home">
-            <a   href="loggedUser.php" class="aside__link">
+            <a href="main.php" class="aside__link">
                 <i  class="sideic fa fa-home "style="font-size: 32px;"></i>
                 <p   class="asidetext w3-animate-bottom">Home</p>
             </a>

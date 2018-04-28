@@ -5,6 +5,11 @@ session_start();
 $Fname="";
 $uname="";
 $uimg="";
+$uEmail="";
+$Lname="";
+$uMobNum="";
+$conEmail=$conMSG=$conName=$conMob=$warningMSG="";
+
 
 if(isset($_SESSION["USERNAME"])){
     $uname=$_SESSION["USERNAME"];
@@ -13,6 +18,10 @@ if(isset($_SESSION["USERNAME"])){
     $res=$conn->query($sql);
     $row=$res->fetch_assoc();
     $Fname=$row["firstname"];
+    $Lname=$row["lastname"];
+    $uMobNum=$row["mobileNom"];
+    $uEmail=$row["email"];
+
 
     $sql="select * from userimg WHERE username='$uname'";
     $res=$conn->query($sql);
@@ -23,10 +32,31 @@ if(isset($_SESSION["USERNAME"])){
 
 
 
+
     $conn->close();
 }
 
 if(isset($_POST["submit"])){
+    $conName =$_POST["Name"];
+    $conMob  =$_POST["mobile"];
+    $conEmail=$_POST["email"];
+    $conMSG  =$_POST["feedbackMSG"];
+
+
+
+    if($conName!="" && $conMob!="" && $conEmail!="" && $conMSG !=""  ){
+        $conn=new mysqli('localhost',"root",'','webproj');
+        $sql="insert into feedback values('','$conName','$conEmail','$conMob','$conMSG')";
+        $conn->query($sql);
+        $warningMSG="Your message has been sent. <br> Thanks for your feedback" ;
+        $conMSG="";
+
+    }
+    else $warningMSG="Input error, make sure of the information!";
+
+
+
+
 
 
 
@@ -50,21 +80,89 @@ if(isset($_POST["submit"])){
     <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
 
     <style>
+
+        #warnMSG{
+            text-align: center;
+            font-size: 1.5em;
+            animation:alarm ;
+            transition: .8s;
+            animation-name: alarm;
+            animation-duration: 1s;
+            animation-delay: .1s;
+            animation-iteration-count:5;
+        }
+        @keyframes alarm {
+            from {color: red;}
+            to {color: white;}
+        }
+        form{
+            color: #FFF;
+        }
+        #maincalldiv{
+
+            /* width: 40%; */
+            /* height: 100%; */
+            top: 100px;
+            margin: auto;
+            padding: 2%;
+            border-radius: 10%;
+            background-color: rgba(0,188,212,0.2);
+            position: relative;
+            width :50%;
+
+        }
         @media (max-width:700px){
-            .maincalldiv{
+            #maincalldiv{
 
                 /* width: 40%; */
                 /* height: 100%; */
-            top: 150px;
-                margin: auto;
-                padding: 2%;
-                border-radius: 10%;
-                background-color: #fafafa;
-                position: relative;
-                width :100%;
+                top: 120px;
+
+                width :90%;
             }
 
         }
+        .button {
+            border-radius: 4px;
+            background-color: #00BCD4;
+            border: none;
+            color: #FFFFFF;
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+            font-size: 1.2em;
+            transition: all 0.5s;
+            cursor: pointer;
+            margin: auto;
+        }
+
+        .button span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.85s;
+            font-size:1.1em;
+        }
+
+        .button span:after {
+            content: '\00bb';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: -20px;
+            transition: 0.5s;
+        }
+
+        .button:hover span {
+            padding-right: 25px;
+        }
+
+        .button:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
+
+
     </style>
 
 </head>
@@ -104,12 +202,12 @@ if(isset($_POST["submit"])){
 
         <ul id="nameAndImg" onmouseover="document.getElementById('ddm').style.display='block'" onmouseleave="document.getElementById('ddm').style.display=''" class=" navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a data-toggle="dropdown" aria-expanded="false" href="#" class="dropdown-toggle"> <span class="caret"></span><img src="img\IMG_4763.jpg" class="dropdown-image" /></a>
-                    <p style="float: right" class="w3-col " id="username">Mahmoud</p>
+                     <a data-toggle="dropdown" aria-expanded="false" href="#" class="dropdown-toggle"> <span class="caret"></span><img src="userImages/<?php if($uimg==""){echo 'DefaultUserIMG.png';}else echo $uimg?>" class="dropdown-image" /></a>
+                     <p style="float: right" class="w3-col " id="username"><?php if($Fname==""){echo "Name";}else echo $Fname ?></p>
                     <ul id="ddm" role="menu" class="dropdown-menu dropdown-menu-right">
-                        <li role="presentation"><a href="#">Edit Profile </a></li>
-                        <li role="presentation"><a href="#">Add new product </a></li>
-                        <li role="presentation" class="activee"><a href="#">Logout </a></li>
+                        <li role="presentation"><a href="<?php if($uname==""){echo "loginAction.php";}     else echo "prof.php" ?>"> <?php if($uname==""){echo "Login";}else echo "Profile" ?> </a></li>
+                        <li role="presentation"><a href="<?php if($uname==""){echo "Registration.php";}else echo "add.php" ?>"><?php if($uname==""){      echo "Sign up";}else echo "Add product" ?>  </a></li>
+                        <li role="presentation" class="activee"><a href="<?php if($uname==""){echo "contactUs.php";}else echo "Logout.php" ?>"><?php if($uname==""){      echo "Call Lazmk team";}else echo "Sign out" ?>  </a></li>
                     </ul>
 
 
@@ -118,44 +216,43 @@ if(isset($_POST["submit"])){
     </span>
 </div>
 <!------------------------------siiiiide      menu----------------------------------------------------->
-<div id="sss" class="sidediv" >
+<div id="sss" class="sidediv" onmouseleave="myFunction(this)" >
     <ul class="asidelist">
         <li title="Home" class="home" data-hint="Home">
-            <a   href="#" class="aside__link">
+            <a href="main.php" class="aside__link">
                 <i  class="sideic fa fa-home "style="font-size: 32px;"></i>
                 <p   class="asidetext w3-animate-bottom">Home</p>
             </a>
         </li>
 
         <li  class="home" data-hint="Home">
-            <a href="#" class="aside__link">
+            <a  href="<?php if($uname==""){echo '#';}else{echo "prof.php";}?>"  style="<?php if($uname==""){echo "cursor: not-allowed";}?>" class="aside__link" >
                 <i   class="sideic glyphicon glyphicon-user w3-xlarge " ></i>
                 <p class="asidetext w3-animate-bottom">Profile</p>
             </a>
         </li>
 
         <li class="home" data-hint="Home">
-            <a href="add.php" class="aside__link">
+            <a  href="<?php if($uname==""){echo '#';}else{echo "add.php";}?>"  style="<?php if($uname==""){echo "cursor: not-allowed";}?>" class="aside__link" >
                 <i class="sideic  glyphicon glyphicon-plus w3-xlarge "></i>
                 <p class="asidetext w3-animate-bottom">  Add Ad</p>
             </a>
         </li>
 
         <li class="home" data-hint="Home">
-            <a id="chosen" href="contactUs.html" class="aside__link">
+            <a id="chosen" href="#" class="aside__link">
                 <i id="chosenicon" class=" sideic fa fa-envelope w3-xlarge "></i>
                 <p id="chosentext" class="asidetext w3-animate-bottom">Call us</p>
             </a>
         </li>
 
+
+
         <li class="home" data-hint="Home">
-
-
-            <a href="#" class="aside__link">
-                <i class="sideic  glyphicon glyphicon-log-out w3-xlarge "></i>
-                <p class="asidetext w3-animate-bottom">Sign out</p>
+            <a href="<?php if($uname==""){echo "ioginAction.php";}else echo "Logout.php" ?>" class="aside__link" style="<?php if($uname==""){echo "background: tomato";}?>">
+                <i style="<?php if($uname==""){echo "color: white";}?>" class="sideic  glyphicon glyphicon-log-out w3-xlarge <?php if($uname=="")echo "w3-spin"?>"></i>
+                <p style="<?php if($uname==""){echo "color: white";}?>" class="asidetext w3-animate-bottom"><?php if($uname=="")echo "Sign in"; else echo "Sign Out" ?></p>
             </a>
-
         </li>
 
 
@@ -163,14 +260,14 @@ if(isset($_POST["submit"])){
     </ul>
 
 </div><!------------------------------------products menu----------------------------------------------->
-<div class="maincalldiv">
-    <form action="/action_page.php" class="w3-container w3-card-4 w3-light-grey  w3-margin">
-    <h2 class="w3-center">Send your notes</h2>
+<div id="maincalldiv">
+    <form style="color: white" method="post" class="w3-container w3-card-4   w3-margin">
+    <h2 class="w3-center "style="color: black">Send your notes</h2>
 
     <div class="w3-row w3-section">
         <div class="w3-col" style="width:50px"><i class="contactDivIcons w3-xxlarge fa fa-user"></i></div>
         <div class="w3-rest">
-            <input class="w3-input w3-border w3-white" name="Name" type="text" placeholder=" Name">
+            <input class="w3-input w3-border w3-white" name="Name" type="text" placeholder=" Name"  value="<?php echo "$Fname  $Lname" ; ?>" <?php if($uname!="") echo "readonly"?>>
         </div>
     </div>
 
@@ -179,31 +276,28 @@ if(isset($_POST["submit"])){
     <div class="w3-row w3-section">
         <div class="w3-col" style="width:50px"><i class="contactDivIcons w3-xxlarge fa fa-envelope-o"></i></div>
         <div class="w3-rest">
-            <input class="w3-input w3-border w3-white" name="email" type="email" placeholder="Email">
+            <input class="w3-input w3-border w3-white" name="email" type="email" placeholder="Email" value="<?php echo "  $uEmail" ; ?>" <?php if($uname!="")echo "readonly"?>>
         </div>
     </div>
 
     <div class="w3-row w3-section">
         <div class="w3-col" style="width:50px"><i class="contactDivIcons contactDivIcons w3-xxlarge fa fa-phone"></i></div>
         <div class="w3-rest">
-            <input class="w3-input w3-border w3-white" name="phone" type="number" placeholder="Phone">
+            <input class="w3-input w3-border w3-white" name="mobile" type="number" placeholder="Phone" value="<?php echo "$uMobNum";?>" <?php if($uname!="")echo "readonly"?>>
         </div>
     </div>
 
     <div class="w3-row w3-section">
         <div class="w3-col" style="width:50px"><i class="w3-xxlarge fa fa-pencil "></i></div>
         <div class="w3-rest">
-            <textarea  class="w3-input w3-border w3-white" rows="5" placeholder="Write you message"></textarea>
+            <textarea name="feedbackMSG" class="w3-input w3-border w3-white" rows="5" placeholder="Write your message"><?php echo "$conMSG";?></textarea>
         </div>
     </div>
 
-    <button name="submit" id="sendNotes" class="w3-button w3-block w3-section w3-ripple w3-padding">Send
-    <i class="fa fa-paper-plane"></i>
-    </button>
+    <button name="submit" id="sendNotes" class="button "><span>Send </span></button>
 
         <div class="">
-
-
+            <p id="warnMSG"><?php echo $warningMSG?></p>
         </div>
 
     </form>
