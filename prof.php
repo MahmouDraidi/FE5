@@ -91,12 +91,12 @@ if($mob!=$updatedMob){
         }
     }
 }
-if($pw1!=""&& $pw2!=""){
+if($pw1!=""|| $pw2!=""){
     if( $pw1 != $pw2 ) {
         $erPW='Password and confirm password does not match!';
     }
     if( $pw1 != "" && !preg_match( "/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/", $_POST["pw1"] ) ) {
-        $erPW='Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"';
+        $erPW='Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters';
     }
 }
     if( $updatedEmail!= "" && !preg_match( "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $_POST["email"] ) ) {
@@ -381,10 +381,11 @@ $conn->close();
                         <div class=" col-md-12">
                             <span class="ProfLabel  w3-col l4 m4 s4" >Confirm</span>
                             <input style="width: 50%"  class="prof_inp input-lg" name="pw2" type="text" id="PW2" disabled >
-                            <p class="errorMSG"><?php echo $erPW?></p>
+
 
                         </div>
                     </div>
+                    <p class="errorMSG"><?php echo $erPW?></p>
                     <p class="errMSG"><?php echo $doneMSG?></p>
                     <div style="margin: 30px 0px 30px -15px;" class="row ">
                         <div class=" col-md-12">
