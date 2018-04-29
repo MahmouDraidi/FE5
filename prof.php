@@ -6,8 +6,133 @@
  * Time: 9:44 PM
  */
 
+session_start();
+$uname="";
+if(!(isset($_SESSION["USERNAME"]))){
+    header( "refresh:5;url=loginAction.php" );
+    die("You need to log in first");
+
+}
+$target_dir = "userImages/";
+$erEm=$erMob=$erPW=$erImage=$im1=$uimg="";
+
+$doneMSG="";
+
+$conn=new mysqli('localhost',"root",'','webproj');
+$uname=$_SESSION["USERNAME"];
+
+$sql="select * from userimg WHERE username='$uname'";
+$res=$conn->query($sql);
+$row=$res->fetch_assoc();
+$uimg=$row["userImage"];
 
 
+$sql="select * from usertable WHERE username='$uname'";
+$res=$conn->query($sql);
+$row=$res->fetch_assoc();
+
+$sql="select * from useradress WHERE username='$uname'";
+$res=$conn->query($sql);
+$addr=$res->fetch_assoc();
+
+
+
+$First =$row["firstname"];
+$Last =$row["lastname"];
+$BD =$row["birthdate"];
+$job =$row["job"];
+$sex =$row["sex"];
+$Email = $row["email"];
+$oldPW=$row["pw"];
+$FB=$row["FBaccount"];
+$mob =$row["mobileNom"];
+$buildNom =$addr["buildingNom"];
+$street =$addr["street"];
+$city =$addr["city"];
+
+if(isset($_POST["submit"])){
+    $conn=new mysqli('localhost',"root",'','webproj');
+
+    $pw1 = $_POST["pw1"];
+    $pw2 = $_POST["pw2"];
+    $job = $_POST["Job"];
+    $buildNom = $_POST["Bnom"];
+    $street = $_POST["Street"];
+    $city = $_POST["city"];
+    $updatedEmail = $_POST["email"];
+    $updatedMob = $_POST["Mnom"];
+    $FBacc = $_POST["fb"];
+
+
+    $sqlEmail = "SELECT email FROM usertable ";
+    $result = $conn->query($sqlEmail);
+if($updatedEmail!=$Email){
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            if($updatedEmail==$row["email"]){
+                $erEm="The Email:   $updatedEmail  is already in use  ";
+                break;
+            }
+        }
+    }}
+
+    $sqlMob = "SELECT mobileNom FROM usertable ";
+    $result = $conn->query($sqlMob);
+
+if($mob!=$updatedMob){
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            if($updatedMob==$row["mobileNom"]){$erMob="The mobile nom:   $mob  is already used  ";
+
+                break;
+            }
+        }
+    }
+}
+if($pw1!=""&& $pw2!=""){
+    if( $pw1 != $pw2 ) {
+        $erPW='Password and confirm password does not match!';
+    }
+    if( $pw1 != "" && !preg_match( "/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/", $_POST["pw1"] ) ) {
+        $erPW='Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"';
+    }
+}
+    if( $updatedEmail!= "" && !preg_match( "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $_POST["email"] ) ) {
+        $erEM='Enter valid email';
+    }
+    if(isset($_POST["image"])&& $erMob!="" && $erEm!="" && $erPW!=""){
+        $im1=$_FILES["Image"]["name"];
+        if (file_exists($target_dir.$im1)) {
+            $erImage= "Sorry, file already exists. try to change name of files";
+
+        }
+        else{
+            move_uploaded_file($_FILES['Image1']['tmp_name'], $target_dir.$im1);
+            $sql="update userimg  SET userImage='$im1' WHERE username='$uname'";
+            $res=$conn->query($sql);
+            $erImage="Image uploaded successfully.";
+        }
+    }
+
+    if($erMob=="" && $erEm=="" && $erPW==""&& $erImage=="" ){
+    if($pw1==""&& $pw2=="")$pw1=$oldPW;
+        $sql="update usertable SET job='$job',pw='$pw1',email='$updatedEmail',FBaccount='$FB' WHERE username='$uname'";
+        $conn->query($sql);
+        $sql="update useradress SET buildingNom='$buildNom',street='$street',city='$city' WHERE username='$uname'";
+        $conn->query($sql);
+        $SuccessMSG="";
+        $doneMSG="Your information has been updated successfully!";
+
+
+    }
+
+
+}
+
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -24,6 +149,15 @@
     <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie" >
 
+
+
+    <style>
+        .errMSG{
+            color: red;
+            font-size: 1.8em;
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
@@ -61,12 +195,12 @@
 
         <ul id="nameAndImg" onmouseover="document.getElementById('ddm').style.display='block'" onmouseleave="document.getElementById('ddm').style.display=''" class=" navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a data-toggle="dropdown" aria-expanded="false" href="#" class="dropdown-toggle"> <span class="caret"></span><img src="img\IMG_4763.jpg" class="dropdown-image" /></a>
-                    <p style="float: right" class="w3-col " id="username">Mahmoud</p>
-                    <ul id="ddm" role="menu" class="dropdown-menu dropdown-menu-right">
-                        <li role="presentation"><a href="#">Edit Profile </a></li>
-                        <li role="presentation"><a href="#">Add new product </a></li>
-                        <li role="presentation" class="activee"><a href="#">Logout </a></li>
+                    <a data-toggle="dropdown" aria-expanded="false" href="#" class="dropdown-toggle"> <span class="caret"></span><img src="userImages/<?php if($uimg==""){echo 'DefaultUserIMG.png';}else echo $uimg?>" class="dropdown-image" /></a>
+                    <p style="float: right" class="w3-col " id="username"><?php if($uname==""){echo "Name";}else echo $First ?></p>
+                    <ul style="position: absolute;right: 20px;top: 75px;" id="ddm" role="menu" class="dropdown-menu dropdown-menu-right">
+                        <li role="presentation"><a href="<?php if($uname==""){echo "loginAction.php";}     else echo "prof.php" ?>"> <?php if($uname==""){echo "Login";}else echo "Profile" ?> </a></li>
+                        <li role="presentation"><a href="<?php if($uname==""){echo "Registration.php";}else echo "add.php" ?>"><?php if($uname==""){      echo "Sign up";}else echo "Add product" ?>  </a></li>
+                        <li role="presentation" class="activee"><a href="<?php if($uname==""){echo "contactUs.php";}else echo "Logout.php" ?>"><?php if($uname==""){      echo "Call Lazmk team";}else echo "Sign out" ?>  </a></li>
                     </ul>
 
 
@@ -125,61 +259,137 @@
 
 <div id="mainProfile">
     <div  class="container post">
-        <form>
+        <form method="post">
             <div class="row">
-                <div class="col-lg-5 col-lg-offset-0 col-md-5 col-xs-offset-0 post-title"><img class="img-circle img-responsive" src="img/IMG_4763.JPG" alt="USER PHOTO" width="80%">
-                    <h1 class="text-justify">Mahmoud Draidi</h1>
-                    <p class="text-left author">mahmoud1997 </p>
+                <div class="col-lg-5 col-lg-offset-0 col-md-5 col-xs-offset-0 post-title"><img class="img-circle img-responsive" src="userImages/<?php if($uimg==""){echo 'DefaultUserIMG.png';}else echo $uimg?>" alt="USER PHOTO" width="80%">
+                    <h1 class="text-justify"><?php echo $First ." ". $Last ;?></h1>
+                    <p class="text-left author"><?php echo $uname ;?> </p>
+                    <input id="UpImage" name="image" type="file" style="display: none">
                 </div>
                 <div class="col-lg-7 col-lg-offset-0 col-md-7 col-md-offset-0 post-body">
                     <p class="secTitle">About me</p>
+
+                 <!--   <div class="row">
+                        <div class="col-md-12">
+                            <span class=" ProfLabel w3-col l4 m4 s4"> Job</span>
+                            <input  class="prof_inp input-lg " type="text"  disabled>
+                        </div>
+                    </div>-->
+                    <div class="row">
+                    <span class=" ProfLabel w3-col l4 m4 s4">Job</span>
+                    <input style="width: 50%" class="prof_inp input-lg" list="jobs" name="Job" id="job" value="<?php echo $job ;?>" disabled>
+
+
+                    <datalist id="jobs" class="">
+                        <option value="Engineer">
+                        <option value="Police man">
+                        <option value="Teacher">
+                        <option value="Student">
+                        <option value="Doctor">
+                        <option value="Farmer">
+                        <option value="Worker">
+                    </datalist>
+                    </div>
+
                     <div class="row">
                         <div class="col-md-12">
-                            <span class=" ProfLabel w3-col l4 m4 s4"> Sex</span>
-                            <input  class="prof_inp input-lg " type="text" id="" disabled>
+                            <span class="ProfLabel  w3-col l4 m4 s4"> Sex</span>
+                            <input style="width: 50%" class="prof_inp input-lg"name="Sex" value="<?php echo $sex ;?>" type="text" id="userSex"disabled >
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <span class="ProfLabel  w3-col l4 m4 s4">Birthdate </span>
-                            <input class="prof_inp input-lg " type="text" id="BD" disabled>
+                            <input style="width: 50%" class="prof_inp input-lg " name="BD" value="<?php echo $BD ;?>" type="date" id="BD" disabled>
                         </div>
                     </div>
+
+                    <p class="secTitle">Adress info</p>
+                    <div class="row">
+                        <span class=" ProfLabel w3-col l4 m4 s4">City</span>
+                        <input style="width: 50%" class="prof_inp input-lg" list="cities" name="city" id="city" value="<?php echo $city;?>" disabled>
+
+
+                        <datalist id="cities" class="">
+                            <option value="Tulkarm">
+                            <option value="Jenin">
+                            <option value="Nablus">
+                            <option value="Jerusalem">
+                            <option value="Hebron">
+                            <option value="Ramallah">
+                            <option value="Qalqilieh">
+                        </datalist>
+                    </div>
+
+                   <!-- <div class="row">
+                        <div class="col-md-12">
+                            <span class="ProfLabel  w3-col l4 m4 s4 "> Street</span>
+                            <input style="width: 50%" class="prof_inp input-lg" value="" type="text" id="str1" disabled >
+                        </div>
+                    </div>-->
+
                     <div class="row">
                         <div class="col-md-12">
-                            <span class="ProfLabel  w3-col l4 m4 s4"> Sex</span>
-                            <input class="prof_inp input-lg" type="text" id="userSex"disabled >
+                            <span class="ProfLabel  w3-col l4 m4 s4 "> Street</span>
+                            <input style="width: 50%" class="prof_inp input-lg" name="Street" value="<?php echo $street ;?>" type="text" id="hell" disabled >
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span class="ProfLabel  w3-col l4 m4 s4 "> Buiding Nom</span>
+                            <input style="width: 50%" class="prof_inp input-lg" name="Bnom" value="<?php echo $buildNom ;?>" type="text" id="bnom" disabled >
+                        </div>
+                    </div>
+
+
+
+
                     <p class="secTitle">Contact info</p>
 
 
                     <div class="row">
                         <div class="col-md-12">
                             <span class="ProfLabel  w3-col l4 m4 s4 "> E-mail</span>
-                            <input class="prof_inp input-lg" type="text" id="email" disabled >
+                            <input style="width: 50%" class="prof_inp input-lg" name="email" value="<?php echo $Email ;?>" type="text" id="email" disabled >
+                            <p class="errorMSG"><?php echo $erEm?></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class=" col-md-12">
                             <span class="ProfLabel  w3-col l4 m4 s4" >Mobile Nom.</span>
-                            <input class="prof_inp input-lg" type="text" id="mobile" disabled>
+                            <input style="width: 50%" class="prof_inp input-lg" name="Mnom" value="<?php echo $mob ;?>" type="text" id="mobile" disabled>
+                            <p class="errorMSG"><?php echo $erMob?></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class=" col-md-12">
                             <span class="ProfLabel  w3-col l4 m4 s4" ><i id="fbIcon" class="fa fa-facebook-square  "></i></span>
-                            <input class="prof_inp input-lg" type="text" id="FB" disabled >
+                            <input style="width: 50%" class="prof_inp input-lg" name="fb" value="<?php echo $FB ;?>" type="text" id="FB" disabled >
 
                         </div>
                     </div>
 
+                    <div id="PW1_div" class="row" style="display: none">
+                        <div class=" col-md-12">
+                            <span class="ProfLabel  w3-col l4 m4 s4" >New password</span>
+                            <input style="width: 50%" class="prof_inp input-lg" name="pw1"  type="text" id="PW1" disabled >
+
+                        </div>
+                    </div>
+                    <div id="PW2_div" class="row" style="display: none">
+                        <div class=" col-md-12">
+                            <span class="ProfLabel  w3-col l4 m4 s4" >Confirm</span>
+                            <input style="width: 50%"  class="prof_inp input-lg" name="pw2" type="text" id="PW2" disabled >
+                            <p class="errorMSG"><?php echo $erPW?></p>
+
+                        </div>
+                    </div>
+                    <p class="errMSG"><?php echo $doneMSG?></p>
                     <div style="margin: 30px 0px 30px -15px;" class="row ">
                         <div class=" col-md-12">
-                            <input id="editButton" class="w3-button w3-col 4" type="submit" value="Save Changes"  >
-                            <input id="cancel" class="w3-button w3-col 4" type="button" value="Cancel" onclick="open(Prof.html)">
-
-
+                            <input id="editButton" name="submit" class="w3-button w3-col 4" type="submit" value="Save new info"  >
+                            <input id="cancel" class="w3-button w3-col 4" type="button" value="Cancel">
                         </div>
                     </div>
 
@@ -198,19 +408,21 @@
 <footer>
     <div class="row">
         <div class="col-md-4 col-sm-6 footer-navigation">
-            <h3 id="footerhead"><a href="#">Company<span id="footerlogo">logo </span></a></h3>
-            <p class="links"><a href="#">Home</a><strong> · </strong><a href="#">Blog</a><strong> · </strong><a href="#">Pricing</a><strong> · </strong><a href="#">About</a><strong> · </strong><a href="#">Faq</a><strong> · </strong><a href="#">Contact</a></p>
+            <h3 id="footerhead"><a href="#">Lazmk<span id="footerlogo">? </span></a></h3>
+            <p class="links"><a href="loginAction.php">Home</a><strong> · </strong><a href="add.php">Add product</a><strong> · </strong><a href="#">Profile</a><strong> ·  </strong><a href="contactUs.php">Contact</a></p>
             <p class="company-name">Lazmk © 2018 </p>
         </div>
         <div class="col-md-4 col-sm-6 footer-contacts">
             <div><span class="fa fa-map-marker footer-contacts-icon"> </span>
-                <p><span class="new-line-span">Main Street</span> Tulkarm, Palestine</p>
+                <p><span class="new-line-span">Main Street</span> Tulkarm, Jenin</p>
+
             </div>
             <div><i class="fa fa-phone footer-contacts-icon"></i>
-                <p class="footer-center-info email text-left"> +972 595403748</p>
+                <p class="footer-center-info email text-left"> +972 595403748  </p>
+                <p class="footer-center-info email text-left"> +972 595435114  </p>
             </div>
             <div><i class="fa fa-envelope footer-contacts-icon"></i>
-                <p> <a href="#" target="_blank">support@Lazmk</a></p>
+                <p> <a href="contactUs.php" target="_blank">support@Lazmk</a></p>
             </div>
         </div>
         <div class="clearfix visible-sm-block"></div>

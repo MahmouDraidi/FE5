@@ -146,7 +146,7 @@ $conn->close();
         <ul id="nameAndImg" onmouseover="document.getElementById('ddm').style.display='block'" onmouseleave="document.getElementById('ddm').style.display=''" class=" navbar-nav navbar-right">
                 <li class="dropdown">
                     <a data-toggle="dropdown" aria-expanded="false" href="#" class="dropdown-toggle"> <span class="caret"></span><img src="userImages/<?php if($uimg==""){echo 'DefaultUserIMG.png';}else echo $uimg?>" class="dropdown-image" /></a>
-                    <p style="float: right" class="w3-col " id="username"><?php if($Fname==""){echo "Name";}else echo $Fname ?></p>
+                    <p style="float: right" class="w3-col " id="username"><?php if($uname==""){echo "Name";}else echo $Fname ?></p>
                     <ul style="position: absolute;right: 20px;top: 75px;" id="ddm" role="menu" class="dropdown-menu dropdown-menu-right">
                         <li role="presentation"><a href="<?php if($uname==""){echo "loginAction.php";}     else echo "prof.php" ?>"> <?php if($uname==""){echo "Login";}else echo "Profile" ?> </a></li>
                         <li role="presentation"><a href="<?php if($uname==""){echo "Registration.php";}else echo "add.php" ?>"><?php if($uname==""){      echo "Sign up";}else echo "Add product" ?>  </a></li>
@@ -305,7 +305,7 @@ $conn->close();
     <div class="row">
         <div class="col-md-4 col-sm-6 footer-navigation">
             <h3 id="footerhead"><a href="#">Lazmk<span id="footerlogo">? </span></a></h3>
-            <p class="links"><a href="loginAction.php">Home</a><strong> · </strong><a href="#">Add product</a><strong> · </strong><a href="#">About</a><strong> ·  </strong><a href="contactUs.php">Contact</a></p>
+            <p class="links"><a href="loginAction.php">Home</a><strong> · </strong><a href="#">Add product</a><strong> · </strong><a href="prof.php">Profile</a><strong> ·  </strong><a href="contactUs.php">Contact</a></p>
             <p class="company-name">Lazmk © 2018 </p>
         </div>
         <div class="col-md-4 col-sm-6 footer-contacts">

@@ -9,12 +9,27 @@ document.getElementById("BD").style.boxShadow="0px 0px 20px red";
     document.getElementById("email").style.boxShadow="0px 0px 20px green";
     document.getElementById("email").disabled=false;
     document.getElementById("mobile").style.boxShadow="0px 0px 20px green";
-    document.getElementById("mobile").disabled=false;
     document.getElementById("FB").style.boxShadow="0px 0px 20px green";
-    document.getElementById("FB").disabled=false;
+    document.getElementById("FB").disabled=false
+    document.getElementById("mobile").style.boxShadow="0px 0px 20px green";
+    document.getElementById("mobile").disabled=false;
+    document.getElementById("PW1").style.boxShadow="0px 0px 20px green";
+    document.getElementById("PW1").disabled=false;
+    document.getElementById("PW2").style.boxShadow="0px 0px 20px green";
+    document.getElementById("PW2").disabled=false;
+    document.getElementById("hell").disabled=false;
+    bnom.style.boxShadow="0px 0px 20px green";
+    city.style.boxShadow="0px 0px 20px green";
+    hell.style.boxShadow="0px 0px 20px green";
+    bnom.disabled=false;
+    city.disabled=false;
+    PW1_div.style.display="block";
+    PW2_div.style.display="block";
+    UpImage.style.display="block";
 
-    document.getElementById("editButton").style.display="block";
-    document.getElementById("cancel").style.display="block";
+
+    editButton.style.display="block";
+    cancel.style.display="block";
 
 
 
