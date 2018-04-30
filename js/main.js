@@ -90,10 +90,6 @@ window.onscroll = function() {
     }
 
 
- function theme() {
-    var html = document.getElementsByTagName('html')[0];
-    html.style.cssText = "--main-site-col: tomato";
-}
 
 
 

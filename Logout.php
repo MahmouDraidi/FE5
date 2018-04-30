@@ -7,7 +7,9 @@
  */
 session_start();
 unset($_SESSION["USERNAME"]);
+
 session_destroy();
+header( "refresh:2;url=loginAction.php" );
 
 ?>
 

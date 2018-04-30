@@ -265,9 +265,12 @@ display: inline-block;
 }
 .themeCol{
     height: 30px;
-    width:  30px;
+    border-radius: 50%;
+    width: 30px;
     cursor: pointer;
     border: 1px solid white;
+    float: left;
+    margin-right: 5px;
 
 }
 .themeCol:hover{
@@ -486,10 +489,11 @@ img.dropdown-image{
 }
 
  .dropdown ul li a{
-    //background:#3a3c3e;
+
     border-radius:2px;
     color:#fff;
     padding:0;
+     font-size: 1.2em;
 }
 
  .dropdown ul li a:active,  .dropdown ul li a:focus,  .dropdown ul li a:hover{

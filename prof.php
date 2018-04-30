@@ -15,7 +15,7 @@ if(!(isset($_SESSION["USERNAME"]))){
 }
 $target_dir = "userImages/";
 $erEm=$erMob=$erPW=$erImage=$im1=$uimg="";
-
+$color="";
 $doneMSG="";
 
 $conn=new mysqli('localhost',"root",'','webproj');
@@ -30,7 +30,7 @@ echo $uimg;
 $sql="select * from usertable WHERE username='$uname'";
 $res=$conn->query($sql);
 $row=$res->fetch_assoc();
-
+$color=$row["userColor"];
 $sql="select * from useradress WHERE username='$uname'";
 $res=$conn->query($sql);
 $addr=$res->fetch_assoc();
@@ -106,20 +106,16 @@ if($pw1!=""){
         $erEM='Enter valid email';
     }
     if($im1!=""){
-echo "Entered if";
-        if (file_exists($target_dir.$im1)) {
-            $erImage= "Sorry, file already exists. try to change name of files";
 
-        }
-        else{
+        $im1=rand(1000000,9999999);
             move_uploaded_file($_FILES['image']['tmp_name'], $target_dir.$im1);
             $sql="update userimg  SET userImage='$im1' WHERE username='$uname'";
             $res=$conn->query($sql);
-            $erImage="Image uploaded successfully.";
-        }
+
+
     }
 
-    if($erMob=="" && $erEm=="" && $erPW==""&& $erImage=="" ){
+    if($erMob=="" && $erEm=="" && $erPW=="" ){
     if($pw1==""&& $pw2=="")$pw1=$oldPW;
         $sql="update usertable SET job='$job',pw='$pw1',email='$updatedEmail',FBaccount='$FB' WHERE username='$uname'";
         $conn->query($sql);
@@ -203,7 +199,7 @@ $conn->close();
                     <ul style="position: absolute;right: 20px;top: 75px;" id="ddm" role="menu" class="dropdown-menu dropdown-menu-right">
                         <li role="presentation"><a href="<?php if($uname==""){echo "loginAction.php";}     else echo "prof.php" ?>"> <?php if($uname==""){echo "Login";}else echo "Profile" ?> </a></li>
                         <li role="presentation"><a href="<?php if($uname==""){echo "Registration.php";}else echo "add.php" ?>"><?php if($uname==""){      echo "Sign up";}else echo "Add product" ?>  </a></li>
-                        <li role="presentation" class="activee"><a href="<?php if($uname==""){echo "contactUs.php";}else echo "Logout.php" ?>"><?php if($uname==""){      echo "Call Lazmk team";}else echo "Sign out" ?>  </a></li>
+                        <li role="presentation" class="activee"><a style="<?php if($color=="#FF6347")echo 'color:white;'?>" href="<?php if($uname==""){echo "contactUs.php";}else echo "Logout.php" ?>"><?php if($uname==""){      echo "Call Lazmk team";}else echo "Sign out" ?>  </a></li>
                     </ul>
 
 
@@ -460,6 +456,11 @@ $conn->close();
         prevScrollpos = currentScrollPos;
     }
 </script>
-
+<script>
+    function theme() {
+        var html = document.getElementsByTagName('html')[0];
+        html.style.cssText = "--main-site-col: <?php if($color!="")echo $color;  ?>";
+    }
+</script>
 </body>
 </html>
