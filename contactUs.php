@@ -78,6 +78,8 @@ if(isset($_POST["submit"])){
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+    <script src="js/main.js"></script>
+    <script src="js/head.js"></script>
 
     <style>
 
@@ -219,7 +221,7 @@ if(isset($_POST["submit"])){
 <div id="sss" class="sidediv" onmouseleave="myFunction(this)" >
     <ul class="asidelist">
         <li title="Home" class="home" data-hint="Home">
-            <a href="main.php" class="aside__link">
+            <a style="border-top-right-radius: 37px" href="main.php" class="aside__link">
                 <i  class="sideic fa fa-home "style="font-size: 32px;"></i>
                 <p   class="asidetext w3-animate-bottom">Home</p>
             </a>
@@ -249,7 +251,7 @@ if(isset($_POST["submit"])){
 
 
         <li class="home" data-hint="Home">
-            <a href="<?php if($uname==""){echo "ioginAction.php";}else echo "Logout.php" ?>" class="aside__link" style="<?php if($uname==""){echo "background: tomato";}?>">
+            <a style="border-bottom-left-radius: 37px" href="<?php if($uname==""){echo "ioginAction.php";}else echo "Logout.php" ?>" class="aside__link" style="<?php if($uname==""){echo "background: tomato";}?>">
                 <i style="<?php if($uname==""){echo "color: white";}?>" class="sideic  glyphicon glyphicon-log-out w3-xlarge <?php if($uname=="")echo "w3-spin"?>"></i>
                 <p style="<?php if($uname==""){echo "color: white";}?>" class="asidetext w3-animate-bottom"><?php if($uname=="")echo "Sign in"; else echo "Sign Out" ?></p>
             </a>
@@ -332,8 +334,21 @@ if(isset($_POST["submit"])){
         </div>
     </div>
 </footer>
-<script  src="js/head.js"></script>
-<script  src="js/main.js"></script>
 
+<script>
+
+    var prevScrollpos = window.pageYOffset;
+    var e = document.getElementById("hhh");
+    var height = getStyle(e, 'height');
+    window.onscroll = function() {
+        var currentScrollPos = window.pageYOffset;
+        if (prevScrollpos > currentScrollPos) {
+            document.getElementById("hhh").style.top = "0";
+        } else {
+            document.getElementById("hhh").style.top ="-"+height;
+        }
+        prevScrollpos = currentScrollPos;
+    }
+</script>
 </body>
 </html>

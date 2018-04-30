@@ -76,4 +76,24 @@ window.onclick = function(event) {
 }
 
 
+var prevScrollpos = window.pageYOffset;
+var e = document.getElementById("hhh");
+var height = getStyle(e, 'height');
+window.onscroll = function() {
+        var currentScrollPos = window.pageYOffset;
+        if (prevScrollpos > currentScrollPos) {
+            document.getElementById("hhh").style.top = "0";
+        } else {
+            document.getElementById("hhh").style.top ="-"+height;
+        }
+        prevScrollpos = currentScrollPos;
+    }
+
+
+ function theme() {
+    var html = document.getElementsByTagName('html')[0];
+    html.style.cssText = "--main-site-col: tomato";
+}
+
+
 

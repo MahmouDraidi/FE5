@@ -85,7 +85,7 @@ $conn->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
 
-    !--===============================================================================================-->
+    <!--===============================================================================================-->
     <link rel="icon" type="image/png" href="../dashboard/img/favicon.ico"/>
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
@@ -105,13 +105,13 @@ $conn->close();
     <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="../dashboard/Addcss/util.css">
-    <link rel="stylesheet" type="text/css" href="../dashboard/Addcss/main.css">
+    <link rel="stylesheet" type="text/css" href="Addcss/mainAdd.css">
     <!--===============================================================================================-->
 
 
 
 </head>
-<body>
+<body onload="theme()">
 <div id="hhh" class="headerdiv w3-row" >
 
 
@@ -162,14 +162,14 @@ $conn->close();
 <div id="sss" class="sidediv" onmouseleave="myFunction(this)">
     <ul class="asidelist">
         <li title="Home" class="home" data-hint="Home">
-            <a href="main.php" class="aside__link">
+            <a style="border-top-right-radius: 37px" href="main.php" class="aside__link">
                 <i class="sideic fa fa-home "style="font-size: 32px;"></i>
                 <p   class="asidetext w3-animate-bottom">Home</p>
             </a>
         </li>
 
         <li  class="home" data-hint="Home">
-            <a href="#" class="aside__link">
+            <a href="prof.php" class="aside__link">
                 <i   class="sideic glyphicon glyphicon-user w3-xlarge " ></i>
                 <p class="asidetext w3-animate-bottom">Profile</p>
             </a>
@@ -192,7 +192,7 @@ $conn->close();
         <li class="home" data-hint="Home">
 
 
-            <a href="#" class="aside__link">
+            <a style="border-bottom-left-radius: 37px" href="Logout.php" class="aside__link">
                 <i class="sideic  glyphicon glyphicon-log-out w3-xlarge "></i>
                 <p class="asidetext w3-animate-bottom">Sign_out</p>
             </a>
@@ -350,7 +350,7 @@ $conn->close();
 
 <!--===============================================================================================-->
 <script src="js/addPage.js"></script>
-
+<script src="js/main.js"></script>
 <script src="js/head.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
@@ -361,7 +361,21 @@ $conn->close();
 
     gtag('config', 'UA-23581568-13');
 </script>
+<script>
 
+    var prevScrollpos = window.pageYOffset;
+    var e = document.getElementById("hhh");
+    var height = getStyle(e, 'height');
+    window.onscroll = function() {
+        var currentScrollPos = window.pageYOffset;
+        if (prevScrollpos > currentScrollPos) {
+            document.getElementById("hhh").style.top = "0";
+        } else {
+            document.getElementById("hhh").style.top ="-"+height;
+        }
+        prevScrollpos = currentScrollPos;
+    }
+</script>
 
 
 </body>

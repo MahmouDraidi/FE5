@@ -397,6 +397,7 @@ $actiCode=rand(100000,999999);
 <script src='https://www.google.com/recaptcha/api.js'></script>
 
 <script>
+
     // Get the modal
     var modal = document.getElementById('myModal');
 

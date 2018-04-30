@@ -3,7 +3,7 @@ $r = false;
  $m = false;
  $n = null;
  $feedback = false;
-$db = new mysqli("localhost", 'root', '123456', 'webproj');
+$db = new mysqli("localhost", 'root', '', 'webproj');
 
 if(isset($_POST['removeUser'])) {
     $user= $_POST["userToRemove"];
@@ -59,7 +59,7 @@ $sql= "select * from feedback" ;
     <link rel="stylesheet" type="text/css" href="css/adminCSS.css" >
 
 </head>
-<body>
+<body >
 <div id="hhh" class="headerdiv w3-row" >
 
 

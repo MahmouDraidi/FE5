@@ -25,7 +25,7 @@ $sql="select * from userimg WHERE username='$uname'";
 $res=$conn->query($sql);
 $row=$res->fetch_assoc();
 $uimg=$row["userImage"];
-
+echo $uimg;
 
 $sql="select * from usertable WHERE username='$uname'";
 $res=$conn->query($sql);
@@ -49,6 +49,7 @@ $mob =$row["mobileNom"];
 $buildNom =$addr["buildingNom"];
 $street =$addr["street"];
 $city =$addr["city"];
+$im1="";
 
 if(isset($_POST["submit"])){
     $conn=new mysqli('localhost',"root",'','webproj');
@@ -62,6 +63,8 @@ if(isset($_POST["submit"])){
     $updatedEmail = $_POST["email"];
     $updatedMob = $_POST["Mnom"];
     $FBacc = $_POST["fb"];
+    $im1=$_FILES["image"]["name"];
+
 
 
     $sqlEmail = "SELECT email FROM usertable ";
@@ -91,7 +94,7 @@ if($mob!=$updatedMob){
         }
     }
 }
-if($pw1!=""|| $pw2!=""){
+if($pw1!=""){
     if( $pw1 != $pw2 ) {
         $erPW='Password and confirm password does not match!';
     }
@@ -102,14 +105,14 @@ if($pw1!=""|| $pw2!=""){
     if( $updatedEmail!= "" && !preg_match( "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $_POST["email"] ) ) {
         $erEM='Enter valid email';
     }
-    if(isset($_POST["image"])&& $erMob!="" && $erEm!="" && $erPW!=""){
-        $im1=$_FILES["Image"]["name"];
+    if($im1!=""){
+echo "Entered if";
         if (file_exists($target_dir.$im1)) {
             $erImage= "Sorry, file already exists. try to change name of files";
 
         }
         else{
-            move_uploaded_file($_FILES['Image1']['tmp_name'], $target_dir.$im1);
+            move_uploaded_file($_FILES['image']['tmp_name'], $target_dir.$im1);
             $sql="update userimg  SET userImage='$im1' WHERE username='$uname'";
             $res=$conn->query($sql);
             $erImage="Image uploaded successfully.";
@@ -160,7 +163,7 @@ $conn->close();
     </style>
 </head>
 
-<body>
+<body onload="theme()">
 
 
 <div id="hhh" class="headerdiv w3-row" >
@@ -213,7 +216,7 @@ $conn->close();
 <div id="sss" class="sidediv" >
     <ul class="asidelist">
         <li title="Home" class="home" data-hint="Home">
-            <a href="main.php" class="aside__link">
+            <a style="border-top-right-radius: 37px" href="main.php" class="aside__link">
                 <i  class="sideic fa fa-home "style="font-size: 32px;"></i>
                 <p   class="asidetext w3-animate-bottom">Home</p>
             </a>
@@ -243,7 +246,7 @@ $conn->close();
         <li class="home" data-hint="Home">
 
 
-            <a href="LoginPage.html" class="aside__link">
+            <a style="border-bottom-left-radius: 37px;" href="Logout.php" class="aside__link">
                 <i class="sideic  glyphicon glyphicon-log-out w3-xlarge "></i>
                 <p class="asidetext w3-animate-bottom">Sign out</p>
             </a>
@@ -259,11 +262,12 @@ $conn->close();
 
 <div id="mainProfile">
     <div  class="container post">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-lg-5 col-lg-offset-0 col-md-5 col-xs-offset-0 post-title"><img class="img-circle img-responsive" src="userImages/<?php if($uimg==""){echo 'DefaultUserIMG.png';}else echo $uimg?>" alt="USER PHOTO" width="80%">
                     <h1 class="text-justify"><?php echo $First ." ". $Last ;?></h1>
-                    <p class="text-left author"><?php echo $uname ;?> </p>
+                    <p style="font-size: 1.7em" class="text-left author"><?php echo $uname ;?> </p>
+                    <p class="errorMSG"> <?php echo $erImage?></p>
                     <input id="UpImage" name="image" type="file" style="display: none">
                 </div>
                 <div class="col-lg-7 col-lg-offset-0 col-md-7 col-md-offset-0 post-body">
@@ -276,8 +280,8 @@ $conn->close();
                         </div>
                     </div>-->
                     <div class="row">
-                    <span class=" ProfLabel w3-col l4 m4 s4">Job</span>
-                    <input style="width: 50%" class="prof_inp input-lg" list="jobs" name="Job" id="job" value="<?php echo $job ;?>" disabled>
+                    <span style="margin-left: 10px" class=" ProfLabel w3-col l4 m4 s4">Job</span>
+                    <input style="    width: 48%; margin-left: -6px" class="prof_inp input-lg" list="jobs" name="Job" id="job" value="<?php echo $job ;?>" disabled>
 
 
                     <datalist id="jobs" class="">
@@ -306,8 +310,8 @@ $conn->close();
 
                     <p class="secTitle">Adress info</p>
                     <div class="row">
-                        <span class=" ProfLabel w3-col l4 m4 s4">City</span>
-                        <input style="width: 50%" class="prof_inp input-lg" list="cities" name="city" id="city" value="<?php echo $city;?>" disabled>
+                        <span style="margin-left: 10px" class=" ProfLabel w3-col l4 m4 s4">City</span>
+                        <input style="width: 48%;margin-left: -6px;" class="prof_inp input-lg" list="cities" name="city" id="city" value="<?php echo $city;?>" disabled>
 
 
                         <datalist id="cities" class="">
@@ -364,7 +368,7 @@ $conn->close();
                     </div>
                     <div class="row">
                         <div class=" col-md-12">
-                            <span class="ProfLabel  w3-col l4 m4 s4" ><i id="fbIcon" class="fa fa-facebook-square  "></i></span>
+                           <span class="ProfLabel  w3-col l4 m4 s4" ><a href="<?php echo $FB?>"> <i id="fbIcon" class="fa fa-facebook-square  "></i></a></span>
                             <input style="width: 50%" class="prof_inp input-lg" name="fb" value="<?php echo $FB ;?>" type="text" id="FB" disabled >
 
                         </div>
@@ -441,6 +445,21 @@ $conn->close();
 
 <script  src="js/head.js"></script>
 <script  src="js/main.js"></script>
+<script>
+
+    var prevScrollpos = window.pageYOffset;
+    var e = document.getElementById("hhh");
+    var height = getStyle(e, 'height');
+    window.onscroll = function() {
+        var currentScrollPos = window.pageYOffset;
+        if (prevScrollpos > currentScrollPos) {
+            document.getElementById("hhh").style.top = "0";
+        } else {
+            document.getElementById("hhh").style.top ="-"+height;
+        }
+        prevScrollpos = currentScrollPos;
+    }
+</script>
 
 </body>
 </html>

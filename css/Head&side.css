@@ -14,6 +14,11 @@
 :root{
     --main-site-col:#00bcd4;
 }
+#sss{
+    border-top-right-radius: 40px;
+    border-bottom-left-radius: 40px;
+
+}
 
 .sideic{
 
@@ -49,6 +54,7 @@
     //max-height: 80px;
     top: 0;
     box-shadow: 0px 5px 39px black;
+    transition: 1s;
 
 
 }
@@ -256,6 +262,16 @@ display: inline-block;
     margin: 6px 0;
     transition: 0.8s;
    // opacity: 0;
+}
+.themeCol{
+    height: 30px;
+    width:  30px;
+    cursor: pointer;
+    border: 1px solid white;
+
+}
+.themeCol:hover{
+    box-shadow: 0px 0px 5px white;
 }
 
 

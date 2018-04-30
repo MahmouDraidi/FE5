@@ -6,11 +6,23 @@
  * Time: 9:31 PM
  */
 session_start();
+
+
+
 $Fname="";
 $uname="";
 $uimg="";
 if(isset($_SESSION["USERNAME"])){
     $uname=$_SESSION["USERNAME"];
+    if(isset( $_GET["color"])){
+        echo "you approached the fuxk";
+        $q = $_GET["color"];
+        $conn=new mysqli('localhost',"root",'','webproj');
+        $sql="update usertable set userColor='$q' WHERE username='$uname'";
+    }
+    $conn=new mysqli('localhost',"root",'','webproj');
+    $sql="update usertable set WHERE username='$uname'";
+
     $conn=new mysqli('localhost',"root",'','webproj');
     $sql="select * from usertable WHERE username='$uname'";
     $res=$conn->query($sql);
@@ -51,7 +63,7 @@ $conn->close();
 
 
 </head>
-<body>
+<body onload="theme()">
 <div id="hhh" class="headerdiv w3-row" >
 
 
@@ -65,7 +77,7 @@ $conn->close();
   <div id="bar2"></div>
   <div id="bar3"></div>
        </div>
-        <span class="menutitle"><p style=" font-family: 'Pacifico', cursive;">lazmk?</p></span>
+        <span  class="menutitle"><p style=" font-family: 'Pacifico', cursive;">lazmk?</p></span>
 
     </span>
 
@@ -93,18 +105,24 @@ $conn->close();
                         <li role="presentation"><a href="<?php if($uname==""){echo "loginAction.php";}     else echo "prof.php" ?>"> <?php if($uname==""){echo "Login";}else echo "Profile" ?> </a></li>
                         <li role="presentation"><a href="<?php if($uname==""){echo "Registration.php";}else echo "add.php" ?>"><?php if($uname==""){      echo "Sign up";}else echo "Add product" ?>  </a></li>
                         <li role="presentation" class="activee"><a href="<?php if($uname==""){echo "contactUs.php";}else echo "Logout.php" ?>"><?php if($uname==""){      echo "Call Lazmk team";}else echo "Sign out" ?>  </a></li>
+
+                        <div>
+                            <p style="text-align: center;font-size: 1.5em">Theme</p>
+                        <div  onclick="showHint(1)" style="cursor: pointer;background:#000;   " class="themeCol"></div>
+                        <div onclick="showHint(2)" style="cursor: pointer;background:#00BCD4 " class="themeCol"></div>
+                        <div onclick="showHint(3)" style="cursor: pointer;background:#FF6347 " class="themeCol"></div>
+                        <div onclick="showHint(4)" style="cursor: pointer;background:#800080 " class="themeCol"></div>
+                        </div>
                     </ul>
-
-
-</li>
+                </li>
         </ul>
     </span>
 </div>
 <!------------------------------siiiiide      menu----------------------------------------------------->
 <div id="sss" class="sidediv" onmouseleave="myFunction(this)" >
     <ul class="asidelist">
-        <li title="Home" class="home" data-hint="Home">
-            <a id="chosen" href="main.php" class="aside__link">
+        <li style="border-top-right-radius: 37px;" title="Home" class="home" data-hint="Home">
+            <a style="border-top-right-radius: 37px" id="chosen" href="main.php" class="aside__link">
                 <i id="chosenicon" class="sideic fa fa-home "style="font-size: 32px;"></i>
                 <p id="chosentext"  class="asidetext w3-animate-bottom">Home</p>
             </a>
@@ -132,7 +150,7 @@ $conn->close();
         </li>
 
         <li class="home" data-hint="Home">
-            <a href="<?php if($uname==""){echo "ioginAction.php";}else echo "Logout.php" ?>" class="aside__link" style="<?php if($uname==""){echo "background: tomato";}?>">
+            <a  href="<?php if($uname==""){echo "ioginAction.php";}else echo "Logout.php" ?>" class="aside__link" style="border-bottom-left-radius: 37px <?php if($uname==""){echo "background: tomato";}?>">
                 <i style="<?php if($uname==""){echo "color: white";}?>" class="sideic  glyphicon glyphicon-log-out w3-xlarge <?php if($uname=="")echo "w3-spin"?>"></i>
                 <p style="<?php if($uname==""){echo "color: white";}?>" class="asidetext w3-animate-bottom"><?php if($uname=="")echo "Sign in"; else echo "Sign Out" ?></p>
             </a>
@@ -220,6 +238,47 @@ $conn->close();
 
 <script  src="js/head.js"></script>
 <script  src="js/main.js"></script>
+<script>
+  /*  function showHint(str) {
+        var x;
+        if(str==1){x="#000"   }
+        if(str==2){x="#00bcd4" }
+        if(str==3){x="#ff6347" }
+        if(str==4){x="#800080" }
+        alert(x);
+
+        $.ajax({
+            type: "POST",
+            url: "main.php",
+            data: {
+                color: x
+
+
+            },
+            success: function(data) {
+                alert('passed');
+            },
+            error: function() {
+                alert("error");
+            }
+
+        });}*/
+  function showHint(str) {
+      var x=str;
+      var xhttp;
+alert("hey");
+      xhttp = new XMLHttpRequest();
+
+
+
+          xhttp.open("GET", "main.php?color="+x, true);
+              xhttp.send();
+              alert("Fuck");
+
+
+
+  }
+</script>
 </body>
 </html>
 
