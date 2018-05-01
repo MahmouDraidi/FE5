@@ -61,6 +61,7 @@ $conn->close();
 
     <style>
         #allproInfo{
+            display: none;
             position: absolute;
             background: rgba(0,0,0,.2);
             width: 100%;
@@ -356,7 +357,7 @@ $conn->close();
     </div>
 </footer>
 <div id="hell" style="display: none"></div>
-
+    <div id="allproInfo" ></div>
 
 <script  src="js/head.js"></script>
 <script  src="js/main.js"></script>
