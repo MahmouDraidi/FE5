@@ -7,7 +7,7 @@ $DBusername = "root";
 $target_dir = "productImages/";
 $uploadOk=0;
 $conn = new mysqli($servername, $DBusername,"","webproj");
-
+$color="";
 if(!(isset($_SESSION["USERNAME"]))){
     die("You need to log in first");
 }
@@ -17,7 +17,7 @@ $sql="select * from usertable WHERE username='$uname'";
 $res=$conn->query($sql);
 $row=$res->fetch_assoc();
 $Fname=$row["firstname"];
-echo $Fname;
+$color=$row["userColor"];
 
 $sql="select * from userimg WHERE username='$uname'";
 $res=$conn->query($sql);
@@ -150,7 +150,7 @@ $conn->close();
                     <ul style="position: absolute;right: 20px;top: 75px;" id="ddm" role="menu" class="dropdown-menu dropdown-menu-right">
                         <li role="presentation"><a href="<?php if($uname==""){echo "loginAction.php";}     else echo "prof.php" ?>"> <?php if($uname==""){echo "Login";}else echo "Profile" ?> </a></li>
                         <li role="presentation"><a href="<?php if($uname==""){echo "Registration.php";}else echo "add.php" ?>"><?php if($uname==""){      echo "Sign up";}else echo "Add product" ?>  </a></li>
-                        <li role="presentation" class="activee"><a href="<?php if($uname==""){echo "contactUs.php";}else echo "Logout.php" ?>"><?php if($uname==""){      echo "Call Lazmk team";}else echo "Sign out" ?>  </a></li>
+                        <li role="presentation" class="activee"><a style="<?php if($color=="#FF6347")echo 'color:white;'?>" href="<?php if($uname==""){echo "contactUs.php";}else echo "Logout.php" ?>"><?php if($uname==""){      echo "Call Lazmk team";}else echo "Sign out" ?>  </a></li>
                     </ul>
 
 
@@ -376,7 +376,12 @@ $conn->close();
         prevScrollpos = currentScrollPos;
     }
 </script>
-
+<script>
+    function theme() {
+        var html = document.getElementsByTagName('html')[0];
+        html.style.cssText = "--main-site-col: <?php if($color!="")echo $color;  ?>";
+    }
+</script>
 
 </body>
 </html>

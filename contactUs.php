@@ -9,7 +9,7 @@ $uEmail="";
 $Lname="";
 $uMobNum="";
 $conEmail=$conMSG=$conName=$conMob=$warningMSG="";
-
+$color="";
 
 if(isset($_SESSION["USERNAME"])){
     $uname=$_SESSION["USERNAME"];
@@ -21,6 +21,7 @@ if(isset($_SESSION["USERNAME"])){
     $Lname=$row["lastname"];
     $uMobNum=$row["mobileNom"];
     $uEmail=$row["email"];
+    $color=$row["userColor"];
 
 
     $sql="select * from userimg WHERE username='$uname'";
@@ -168,7 +169,7 @@ if(isset($_POST["submit"])){
     </style>
 
 </head>
-<body>
+<body onload="theme()">
 <div id="hhh" class="headerdiv w3-row" >
 
 
@@ -209,7 +210,7 @@ if(isset($_POST["submit"])){
                     <ul id="ddm" role="menu" class="dropdown-menu dropdown-menu-right">
                         <li role="presentation"><a href="<?php if($uname==""){echo "loginAction.php";}     else echo "prof.php" ?>"> <?php if($uname==""){echo "Login";}else echo "Profile" ?> </a></li>
                         <li role="presentation"><a href="<?php if($uname==""){echo "Registration.php";}else echo "add.php" ?>"><?php if($uname==""){      echo "Sign up";}else echo "Add product" ?>  </a></li>
-                        <li role="presentation" class="activee"><a href="<?php if($uname==""){echo "contactUs.php";}else echo "Logout.php" ?>"><?php if($uname==""){      echo "Call Lazmk team";}else echo "Sign out" ?>  </a></li>
+                        <li role="presentation" class="activee"><a style="<?php if($color=="#FF6347")echo 'color:white;'?>" href="<?php if($uname==""){echo "contactUs.php";}else echo "Logout.php" ?>"><?php if($uname==""){      echo "Call Lazmk team";}else echo "Sign out" ?>  </a></li>
                     </ul>
 
 
@@ -251,7 +252,7 @@ if(isset($_POST["submit"])){
 
 
         <li class="home" data-hint="Home">
-            <a style="border-bottom-left-radius: 37px" href="<?php if($uname==""){echo "ioginAction.php";}else echo "Logout.php" ?>" class="aside__link" style="<?php if($uname==""){echo "background: tomato";}?>">
+            <a style="border-bottom-left-radius: 37px;<?php if($uname==""){echo "background: tomato";}?>" href="<?php if($uname==""){echo "loginAction.php";}else echo "Logout.php" ?>" class="aside__link" >
                 <i style="<?php if($uname==""){echo "color: white";}?>" class="sideic  glyphicon glyphicon-log-out w3-xlarge <?php if($uname=="")echo "w3-spin"?>"></i>
                 <p style="<?php if($uname==""){echo "color: white";}?>" class="asidetext w3-animate-bottom"><?php if($uname=="")echo "Sign in"; else echo "Sign Out" ?></p>
             </a>
@@ -269,7 +270,7 @@ if(isset($_POST["submit"])){
     <div class="w3-row w3-section">
         <div class="w3-col" style="width:50px"><i class="contactDivIcons w3-xxlarge fa fa-user"></i></div>
         <div class="w3-rest">
-            <input class="w3-input w3-border w3-white" name="Name" type="text" placeholder=" Name"  value="<?php echo "$Fname  $Lname" ; ?>" <?php if($uname!="") echo "readonly"?>>
+            <input class="w3-input w3-border w3-white" name="Name" type="text" placeholder="name"  value="<?php echo "$Fname  $Lname" ; ?>" <?php if($uname!="") echo "readonly"?>>
         </div>
     </div>
 
@@ -309,8 +310,8 @@ if(isset($_POST["submit"])){
 <footer>
     <div class="row">
         <div class="col-md-4 col-sm-6 footer-navigation">
-            <h3 id="footerhead"><a href="#">Company<span id="footerlogo">logo </span></a></h3>
-            <p class="links"><a href="#">Home</a><strong> · <a href=<?php if($Fname=="") echo"#";else echo "prof.php"?>>Profile</a><strong> · </strong><a href="<?php if($Fname=="") echo"#";else echo "add.php"?>">Add product</a><strong> ·  </strong><a href="contactUs.php">Contact</a></p> <p class="company-name">Lazmk © 2018 </p>
+            <h3 id="footerhead"><a href="#">Lazmk<span id="footerlogo">? </span></a></h3>
+            <p class="links"><a href="<?php if($uname=="") echo"#";else echo "main.php"?>">Home</a><strong> · <a href=<?php if($Fname=="") echo"#";else echo "prof.php"?>>Profile</a><strong> · </strong><a href="<?php if($Fname=="") echo"#";else echo "add.php"?>">Add product</a><strong> ·  </strong><a href="contactUs.php">Contact</a></p> <p class="company-name">Lazmk © 2018 </p>
         </div>
         <div class="col-md-4 col-sm-6 footer-contacts">
             <div><span class="fa fa-map-marker footer-contacts-icon"> </span>
@@ -348,6 +349,12 @@ if(isset($_POST["submit"])){
             document.getElementById("hhh").style.top ="-"+height;
         }
         prevScrollpos = currentScrollPos;
+    }
+</script>
+<script>
+    function theme() {
+        var html = document.getElementsByTagName('html')[0];
+        html.style.cssText = "--main-site-col: <?php if($color!="")echo $color;else echo'#00bcd4';  ?>";
     }
 </script>
 </body>

@@ -8,18 +8,13 @@
 session_start();
 
 
-
+$color="";
 $Fname="";
 $uname="";
 $uimg="";
 if(isset($_SESSION["USERNAME"])){
     $uname=$_SESSION["USERNAME"];
-    if(isset( $_GET["color"])){
-        echo "you approached the fuxk";
-        $q = $_GET["color"];
-        $conn=new mysqli('localhost',"root",'','webproj');
-        $sql="update usertable set userColor='$q' WHERE username='$uname'";
-    }
+
     $conn=new mysqli('localhost',"root",'','webproj');
     $sql="update usertable set WHERE username='$uname'";
 
@@ -28,6 +23,8 @@ if(isset($_SESSION["USERNAME"])){
     $res=$conn->query($sql);
     $row=$res->fetch_assoc();
     $Fname=$row["firstname"];
+    $color=$row["userColor"];
+
 
     $sql="select * from userimg WHERE username='$uname'";
     $res=$conn->query($sql);
@@ -104,14 +101,20 @@ $conn->close();
                     <ul id="ddm" role="menu" class="dropdown-menu dropdown-menu-right">
                         <li role="presentation"><a href="<?php if($uname==""){echo "loginAction.php";}     else echo "prof.php" ?>"> <?php if($uname==""){echo "Login";}else echo "Profile" ?> </a></li>
                         <li role="presentation"><a href="<?php if($uname==""){echo "Registration.php";}else echo "add.php" ?>"><?php if($uname==""){      echo "Sign up";}else echo "Add product" ?>  </a></li>
-                        <li role="presentation" class="activee"><a href="<?php if($uname==""){echo "contactUs.php";}else echo "Logout.php" ?>"><?php if($uname==""){      echo "Call Lazmk team";}else echo "Sign out" ?>  </a></li>
+                        <li role="presentation" class="activee"><a  style="<?php if($color=="#FF6347")echo 'color:white;'?>"  href="<?php if($uname==""){echo "contactUs.php";}else echo "Logout.php" ?>"><?php if($uname==""){      echo "Call Lazmk team";}else echo "Sign out" ?>  </a></li>
 
                         <div>
-                            <p style="text-align: center;font-size: 1.5em">Theme</p>
-                        <div  onclick="showHint(1)" style="cursor: pointer;background:#000;   " class="themeCol"></div>
-                        <div onclick="showHint(2)" style="cursor: pointer;background:#00BCD4 " class="themeCol"></div>
-                        <div onclick="showHint(3)" style="cursor: pointer;background:#FF6347 " class="themeCol"></div>
-                        <div onclick="showHint(4)" style="cursor: pointer;background:#800080 " class="themeCol"></div>
+                            <ul style="list-style: none;border: none;">
+                                <p style="text-align: center;font-size: 1.5em">Theme</p>
+                                <li onclick="showHint(1)" style="background:#000;   " class="themeCol"></li>
+                                <li onclick="showHint(2)" style="background:#00BCD4 " class="themeCol"></li>
+                                <li onclick="showHint(3)" style="background:#FF6347 " class="themeCol"></li>
+                                <li onclick="showHint(4)" style="background:#800080 " class="themeCol"></li>
+                                <li onclick="showHint(5)" style="background:#008000;   " class="themeCol"></li>
+                                <li onclick="showHint(6)" style="background:#ff0000 " class="themeCol"></li>
+                                <li onclick="showHint(7)" style="background:#00008b " class="themeCol"></li>
+                                <li onclick="showHint(8)" style="background:#50942f " class="themeCol"></li>
+                            </ul>
                         </div>
                     </ul>
                 </li>
@@ -150,7 +153,7 @@ $conn->close();
         </li>
 
         <li class="home" data-hint="Home">
-            <a  href="<?php if($uname==""){echo "ioginAction.php";}else echo "Logout.php" ?>" class="aside__link" style="border-bottom-left-radius: 37px <?php if($uname==""){echo "background: tomato";}?>">
+            <a  href="<?php if($uname==""){echo "loginAction.php";}else echo "Logout.php" ?>" class="aside__link" style="border-bottom-left-radius: 37px; <?php if($uname==""){echo "background: tomato";}?>">
                 <i style="<?php if($uname==""){echo "color: white";}?>" class="sideic  glyphicon glyphicon-log-out w3-xlarge <?php if($uname=="")echo "w3-spin"?>"></i>
                 <p style="<?php if($uname==""){echo "color: white";}?>" class="asidetext w3-animate-bottom"><?php if($uname=="")echo "Sign in"; else echo "Sign Out" ?></p>
             </a>
@@ -234,50 +237,52 @@ $conn->close();
         </div>
     </div>
 </footer>
+<div id="hell" style="display: none"></div>
 
 
 <script  src="js/head.js"></script>
 <script  src="js/main.js"></script>
+
 <script>
-  /*  function showHint(str) {
-        var x;
-        if(str==1){x="#000"   }
-        if(str==2){x="#00bcd4" }
-        if(str==3){x="#ff6347" }
-        if(str==4){x="#800080" }
-        alert(x);
+    function theme() {
+        var html = document.getElementsByTagName('html')[0];
+        html.style.cssText = "--main-site-col: <?php if($color!="")echo $color;else echo "#00bcd4" ?>";
+    }
+</script>
+<script>
+    function showHint(str) {
+        var u=<?php echo "\"$uname\""; ?> ;
 
-        $.ajax({
-            type: "POST",
-            url: "main.php",
-            data: {
-                color: x
-
-
-            },
-            success: function(data) {
-                alert('passed');
-            },
-            error: function() {
-                alert("error");
-            }
-
-        });}*/
-  function showHint(str) {
-      var x=str;
-      var xhttp;
-alert("hey");
-      xhttp = new XMLHttpRequest();
+        var col="";
+        if(str=='1'){col="000"}
+        else if(str=='2'){col="00bcd4"}
+        else if(str=='3'){col="FF6347"}
+        else if(str=='4'){col="800080"}
+        else if(str=='5'){col="008000"}
+        else if(str=='6'){col="ff0000"}
+        else if(str=='7'){col="00008b"}
+        else if(str=='8'){col="50942f"}
 
 
+        var html = document.getElementsByTagName('html')[0];
+        html.style.cssText = "--main-site-col:#"+col;
 
-          xhttp.open("GET", "main.php?color="+x, true);
-              xhttp.send();
-              alert("Fuck");
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+
+
+            var x=(xmlhttp.responseText);
+            var y=x.substring(0,7);
 
 
 
-  }
+
+        };
+        xmlhttp.open("GET", "ajaxHandler.php?q=" + col+"&u="+u, true);
+        xmlhttp.send();
+
+    }
+
 </script>
 </body>
 </html>

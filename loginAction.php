@@ -72,7 +72,7 @@ if(isset($_POST["submit"])) {
             $modHead="Welcome $uname";
             $warninMSG= "Account is activated \n You can log in using your password next time.";
             $_SESSION["USERNAME"]=$uname;
-            header( "refresh:5;url=main.php" );
+            header( "refresh:3;url=main.php" );
 
         } else {
             $modHead="Account not activated yet";
