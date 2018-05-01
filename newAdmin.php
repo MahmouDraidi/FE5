@@ -67,7 +67,7 @@ $messageCount =  mysqli_num_rows($db->query( "select messageID from feedback "))
             document.getElementById('invites-btn').classList.remove('active');
             document.getElementById('events-btn').classList.remove('active');
 
-            if(str == 'mess') {
+            if(str == 'mess') {     /**/
            document.getElementById('messages-btn').classList.add('active');
 }
             if(str == 'user'){

@@ -40,7 +40,7 @@ if ($_REQUEST['k']) {
             }
         }
     }
-    if ($c == "pro") {
+    if ($c == "pro") {      /**/
         if ($proResult) {
             while ($row = $proResult->fetch_assoc()) {
                 echo " <button class=\"accordion\" onclick='D()'>Type :" . $row['type'] . " &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;By : (" . $row['username'] . ")</button>
