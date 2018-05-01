@@ -75,10 +75,11 @@ if(isset($_POST["Update"])){
             $warninMSG="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters";
         }
         else{
+            $newPW=md5($newPW);
             $sql         = "UPDATE usertable SET pw='$newPW' WHERE username='$user'";
             $conn->query($sql);
             $warninMSG="Password updated successfully.";
-            header( "refresh:5;url=loginAction.php" );
+            header( "refresh:2;url=loginAction.php" );
         }
 
 

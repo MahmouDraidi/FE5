@@ -43,6 +43,7 @@ if(isset($_POST["submit"])) {
     $storedPw = "";
     $uname = $_POST["name"];
     $pw = $_POST["pw"];
+
     $sql = "SELECT * FROM usertable WHERE username='$uname'";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
@@ -67,12 +68,14 @@ if(isset($_POST["submit"])) {
 
     if ($found == "y" && $actiCode != "") {
         if ($actiCode == $pw) {
+            $modHead="Welcome $uname";
+            $warninMSG= "Account is activated <br> You can log in using your password next time.";
+
             $sql = "UPDATE usertable SET Verified='Yes' WHERE username='$uname'";
             $result = $conn->query($sql);
-            $modHead="Welcome $uname";
-            $warninMSG= "Account is activated \n You can log in using your password next time.";
             $_SESSION["USERNAME"]=$uname;
-            header( "refresh:3;url=main.php" );
+            unset($_SESSION["FinishedReg"]);
+            header( "refresh:2;url=main.php" );
 
         } else {
             $modHead="Account not activated yet";
@@ -80,13 +83,14 @@ if(isset($_POST["submit"])) {
         }
 
     } elseif ($found == "y" && $actiCode == "") {
+        $pw=md5($pw);
 
         if ($storedPw == $pw) {
            // header('Location:loggedIn.html');
             $modHead="Welcome $uname";
             $warninMSG= "We hope you enjoy surfing Lazmk website";
             $_SESSION["USERNAME"]=$uname;
-            header( "refresh:5;url=main.php" );
+            header( "refresh:3;url=main.php" );
 
 
         }
