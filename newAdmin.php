@@ -6,156 +6,174 @@
  * Time: 6:19 PM
  */
 
+
+$db = new mysqli("localhost", 'root', '', 'webproj');
+
+
+$userCount= mysqli_num_rows($db->query( "select username from usertable "));
+$proCount= mysqli_num_rows($db->query( "select prodID from product "));
+$messageCount =  mysqli_num_rows($db->query( "select messageID from feedback "));
+
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!DOCTYPE HTML>
 <html>
 
 <head>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" type="text/css" href="css/newAdminCSS.css" >
+    <script>
+        function deleteMessage(str) {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    this.responseText;
+                }
+            };
+            xmlhttp.open("POST", "adminDelete.php?id="+ str, true);
+            xmlhttp.send();
+            choosePage('mess');
+        }
+
+        function deleteUser(str) {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    this.responseText;
+                }
+            };
+            xmlhttp.open("POST", "adminDelete.php?username=" + str, true);
+            xmlhttp.send();
+            choosePage('user');
+
+        }
+
+        function  deletePro(str){
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    this.responseText;
+                }
+            };
+            xmlhttp.open("POST", "adminDelete.php?proID=" + str, true);
+            xmlhttp.send();
+            choosePage('pro');
+
+        }
+
+        function choosePage(str) {
+            document.getElementById('messages-btn').classList.remove('active');
+            document.getElementById('invites-btn').classList.remove('active');
+            document.getElementById('events-btn').classList.remove('active');
+
+            if(str == 'mess') {
+           document.getElementById('messages-btn').classList.add('active');
+}
+            if(str == 'user'){
+                document.getElementById('invites-btn').classList.add('active');
+            }
+
+            if(str == 'pro'){
+                document.getElementById('events-btn').classList.add('active');
+            }
+
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById('N').innerHTML= this.responseText;
+                }
+            };
+            xmlhttp.open("POST", "choosePage.php?k="+ str, true);
+            xmlhttp.send();
+
+
+        }
+
+
+
+        function D() {
+
+            var acc = document.getElementsByClassName("accordion");
+            var i;
+
+            for (i = 0; i < acc.length; i++) {
+                acc[i].addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    var panel = this.nextElementSibling;
+                    if (panel.style.display === "block") {
+                        panel.style.display = "none";
+                    } else {
+                        panel.style.display = "block";
+                    }
+                });
+            }
+
+        }
+
+
+
+    </script>
+
 
 </head>
+
+
+
+
+
 <body>
-<aside id="sidebar">
-    <div class="logo">Logo</div>
+<form>
+<aside id="sidebar" >
+    <div class="logo">Lazmk?</div>
     <menu>
         <ul>
-            <li><a href="#page-1" id="messages-btn" class="menu-link active"><span class="icon fontawesome-envelope"></span>Messages<div class="menu-box-number">23</div></a></li>
-            <li><a id="invites-btn" class="menu-link" href="#page-2"><span class="icon entypo-paper-plane"></span>Invites<div class="menu-box-number">12</div></a></li>
-            <li><a id="events-btn" class="menu-link" href="#page-3"><span class="icon entypo-calendar"></span>Events<div class="menu-box-number">5</div></a></li>
+            <li><a  id="messages-btn" class="menu-link " onclick="choosePage('mess'); ">
+                    <span class="icon fontawesome-envelope"></span>Messages
+                    <div class="menu-box-number"><?php echo $messageCount?></div></a></li>
+
+            <li><a   id="invites-btn" class="menu-link "  onclick="choosePage('user');">
+                    <span class="icon entypo-paper-plane"></span>Users
+                    <div class="menu-box-number"><?php echo $userCount?></div></a></li>
+
+            <li><a id="events-btn" class="menu-link" onclick="choosePage('pro')">
+                    <span class="icon entypo-calendar" ></span>Products
+                    <div class="menu-box-number"><?php echo $proCount?></div></a></li>
         </ul>
     </menu>
     <div class="profile">
         <img src="userImages/DefaultUserImg.png" alt="Profile Picture" />
         <p>Admin</p>
-        <a href="#"><span class="icon entypo-cog"></span>Account Settings</a>
     </div>
 </aside>
+
+
+
+</form>
+
+
+
 <main>
     <div id="page-1" class="content box-active">
         <header>
             <h2>Messages</h2>
-            <div class="function-buttons"><span class="reply">Reply</span></div>
+
         </header>
-        <ul>
-            <li>
-                <div class="name">Someone Name</div>
-                <div class="subject">This is the subject of the message</div>
-               
-            </li>
-            <li>
-                <div class="name">Someone Name</div>
-                <div class="subject">This is the subject of the message</div>
-               
-            </li>
-            <li>
-                <div class="name">Someone Name</div>
-                <div class="subject">This is the subject of the message</div>
-               
-            </li>
-            <li>
-                <div class="name">Someone Name</div>
-                <div class="subject">This is the subject of the message</div>
-               
-            </li>
-            <li>
-                <div class="name">Someone Name</div>
-                <div class="subject">This is the subject of the message</div>
-               
-            </li>
-            <li>
-                <div class="name">Someone Name</div>
-                <div class="subject">This is the subject of the message</div>
-               
-            </li>
-            <li>
-                <div class="name">Someone Name</div>
-                <div class="subject">This is the subject of the message</div>
-               
-            </li>
-        </ul>
     </div>
-    <div id="page-2" class="content">
-        <header>
-            <h2>Invites</h2>
-            <div class="function-buttons"><span class="reply">Reply</span></div>
-        </header>
-        <ul>
-            <li>
-                <div class="name">Someone Name</div>
-                <div class="subject">This is the subject of the message</div>
-               
-            </li>
-            <li>
-                <div class="name">Someone Name</div>
-                <div class="subject">This is the subject of the message</div>
-               
-            </li>
-            <li>
-                <div class="name">Someone Name</div>
-                <div class="subject">This is the subject of the message</div>
-               
-            </li>
-            <li>
-                <div class="name">Someone Name</div>
-                <div class="subject">This is the subject of the message</div>
-               
-            </li>
-        </ul>
-    </div>
-    <div id="page-3" class="content">
-        <header>
-            <h2>Events</h2>
-            <div class="function-buttons"><span class="reply">Reply</span></div>
-        </header>
-        <ul>
-            <li>
-                <div class="name">Someone Name</div>
-                <div class="subject">This is the subject of the message</div>
-               
-            </li>
-            <li>
-                <div class="name">Someone Name</div>
-                <div class="subject">This is the subject of the message</div>
-               
-            </li>
-            <li>
-                <div class="name">Someone Name</div>
-                <div class="subject">This is the subject of the message</div>
-               
-            </li>
-            <li>
-                <div class="name">Someone Name</div>
-                <div class="subject">This is the subject of the message</div>
-               
-            </li>
-            <li>
-                <div class="name">Someone Name</div>
-                <div class="subject">This is the subject of the message</div>
-               
-            </li>
-            <li>
-                <div class="name">Someone Name</div>
-                <div class="subject">This is the subject of the message</div>
-               
-            </li>
-        </ul>
-    </div>
+
+
+
+
+<div  id="N" style=" margin-left: 1%;   overflow-y: scroll;   max-height: 500px">
+
+</div>
+
+
+
+
+</div>
 </main>
+
+
 </body>
 </html>

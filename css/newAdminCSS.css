@@ -39,7 +39,7 @@ ul {
     height: 100%;
     top: 0;
     left: 0;
-    width: 300px;
+    width: 20%;
     box-sizing: border-box;
 }
 #sidebar .logo {
@@ -49,8 +49,8 @@ ul {
     line-height: 200px;
     font-size: 300%;
     text-transform: uppercase;
-    color: #b1b9c5;
-    font-family: "Yanone Kaffeesatz";
+    color: white;
+    font-family:  'Pacifico', cursive;
 }
 #sidebar a {
     padding: 15px 25px;
@@ -69,6 +69,7 @@ ul {
 #sidebar .icon {
     margin-right: 10px;
     color: gray;
+    float: right;
 }
 #sidebar .menu-box-number {
     position: absolute;
@@ -117,6 +118,7 @@ main {
 main .content {
     display: none;
     opacity: 0;
+
 }
 main .box-active {
     display: block;
@@ -130,6 +132,7 @@ main header {
 }
 main header h2 {
     display: inline-block;
+
 }
 main header .function-buttons {
     display: inline-block;
@@ -167,4 +170,46 @@ main ul li .time {
     float: right;
     color: #bfbfbf;
     padding-right: 25px;
+}
+.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    transition: 0.4s;
+    content:'x';
+    float: right;
+}
+
+.active, .accordion:hover {
+    background-color: #ccc;
+}
+
+.panel {
+    padding: 0 18px;
+    display: none;
+    background-color: white;
+    overflow: hidden;
+}
+
+.accordion:after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 13px;
+    color: #777;
+    float: right;
+    margin-left: 5px;
+}
+
+.active:after {
+    content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+.deleteIcon{
+   width: 20px ;
+    height: 20px;
+    cursor: pointer;
 }
