@@ -12,11 +12,11 @@ $color="";
 $Fname="";
 $uname="";
 $uimg="";
+$icon="";
 if(isset($_SESSION["USERNAME"])){
     $uname=$_SESSION["USERNAME"];
 
-    $conn=new mysqli('localhost',"root",'','webproj');
-    $sql="update usertable set WHERE username='$uname'";
+
 
     $conn=new mysqli('localhost',"root",'','webproj');
     $sql="select * from usertable WHERE username='$uname'";
@@ -59,6 +59,56 @@ $conn->close();
     <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
 
 
+    <style>
+        #allproInfo{
+            position: absolute;
+            background: rgba(0,0,0,.2);
+            width: 100%;
+            height: 100%;
+            margin: auto;
+        }
+       .pID, .pOwner{
+            text-align: left;
+        }
+       .prodDiv{
+           margin:10px 0px;
+
+
+       }
+       .pType{
+           font-size: 15px;
+       }
+       .prodDiv>img{
+           border: 1px solid <?php if($color!="")echo $color;else echo "#00bcd4" ?>;
+           height: 180px;
+       }
+       .pPrice{
+           background: <?php if($color!="")echo $color;else echo "#00bcd4" ?>;border-radius: 5px;
+           font-size: 20px;
+
+           color: white;
+       }
+       .prodDiv:hover{
+           cursor: pointer;
+           opacity: .5;
+
+       }
+       .prodDiv:hover>p>i{
+
+           opacity: .9;
+
+       }
+       .ownerUname{
+           display: none;
+       }
+       @media (max-width:600px) {
+           .prodDiv>img{
+               height: 380px;
+           }
+
+       }
+    </style>
+
 </head>
 <body onload="theme()">
 <div id="hhh" class="headerdiv w3-row" >
@@ -83,7 +133,7 @@ $conn->close();
     <span class="searcharea w3-col s4" id="ic1">
 
              <form>
-                <input  id="searchinp" class="w3-input w3-border w3-animate-input w3-white" type="text" placeholder="Search" style="background-image:url(img/searchicon.png); ">
+                <input onkeyup="filter()"  id="searchinp" class="w3-input w3-border w3-animate-input w3-white" type="text" placeholder="Search" style="background-image:url(img/searchicon.png); ">
              </form>
 
     </span>
@@ -106,14 +156,14 @@ $conn->close();
                         <div>
                             <ul style="list-style: none;border: none;">
                                 <p style="text-align: center;font-size: 1.5em">Theme</p>
-                                <li onclick="showHint(1)" style="background:#000;   " class="themeCol"></li>
-                                <li onclick="showHint(2)" style="background:#00BCD4 " class="themeCol"></li>
-                                <li onclick="showHint(3)" style="background:#FF6347 " class="themeCol"></li>
-                                <li onclick="showHint(4)" style="background:#800080 " class="themeCol"></li>
-                                <li onclick="showHint(5)" style="background:#008000;   " class="themeCol"></li>
-                                <li onclick="showHint(6)" style="background:#ff0000 " class="themeCol"></li>
-                                <li onclick="showHint(7)" style="background:#00008b " class="themeCol"></li>
-                                <li onclick="showHint(8)" style="background:#50942f " class="themeCol"></li>
+                                <li onclick="changeCol(1)" style="background:#000;   " class="themeCol"></li>
+                                <li onclick="changeCol(2)" style="background:#00BCD4 " class="themeCol"></li>
+                                <li onclick="changeCol(3)" style="background:#FF6347 " class="themeCol"></li>
+                                <li onclick="changeCol(4)" style="background:#800080 " class="themeCol"></li>
+                                <li onclick="changeCol(5)" style="background:#008000 " class="themeCol"></li>
+                                <li onclick="changeCol(6)" style="background:#ff0000 " class="themeCol"></li>
+                                <li onclick="changeCol(7)" style="background:#00008b " class="themeCol"></li>
+                                <li onclick="changeCol(8)" style="background:#50942f " class="themeCol"></li>
                             </ul>
                         </div>
                     </ul>
@@ -165,35 +215,37 @@ $conn->close();
 
 </div>
 
-<!------------------------------------products menu----------------------------------------------->
+<!------------------------------------Slider----------------------------------------------->
 
 <div id="mainDiv">
 
     <div  class="slideshow-container">
 
         <div class="mySlides fade">
-            <div class="numbertext">1 / 3</div>
-            <img src="img/img_nature_wide.jpg" style="width:100%">
+            <div class="numbertext">1 / 4</div>
+            <img src="img/p1.jpg" style="width:100%">
             <div class="text">Caption Text</div>
         </div>
 
         <div class="mySlides fade">
-            <div class="numbertext">2 / 3</div>
-            <img src="img/img_fjords_wide.jpg" style="width:100%">
+            <div class="numbertext">2 / 4</div>
+            <img src="img/42a750ec11a71441440bbc6287cc5b93.png" style="width:100%">
             <div class="text">Caption Two</div>
         </div>
 
         <div class="mySlides fade">
-            <div class="numbertext">3 / 3</div>
-            <img src="img/img_mountains_wide.jpg" style="width:100%">
+            <div class="numbertext">3 / 4</div>
+            <img src="img/dsaasd.JPG" style="width:100%">
             <div class="text">Caption Three</div>
         </div>
 
         <div class="mySlides fade">
-            <div class="numbertext">3 / 3</div>
-            <img src="img/p1.jpg" style="width:100%">
+            <div class="numbertext">4 / 4</div>
+            <img src="img/slide3-1024x387.jpg" style="width:100%">
             <div class="text">Caption Three</div>
         </div>
+
+
 
     </div>
     <br>
@@ -205,8 +257,74 @@ $conn->close();
         <span class="dot"></span>
     </div>
 </div>
+<!------------------------------------products menu----------------------------------------------->
+<div>
+ <div  class="w3-row-padding w3-padding-16 w3-center " id="MPDiv">
+         <!-- <div class="w3-quarter prodDiv">
+
+            <img  src="productImages/12-nikon-d3400.jpg" alt="Sandwich" style="width:100%">
+            <h3>Canon</h3>
+            <p>Type: Cameras</p>
+            <p class="pPrice" >18$</p>
+            <p class="pOwner">Owner: Mahmoud Draidi</p>
+            <p class="pID">Product ID:5<i style="float: right;font-size: 20px;" class="fa fa-trash"></i></p>
+            <p class="ownerUname"></p>
+
+        </div>-->
 
 
+        <?php
+       // if($uname!="")
+
+        $conn=new mysqli('localhost',"root",'','webproj');
+
+        $sqlProd = "SELECT * FROM product ";
+        $result = $conn->query($sqlProd);
+
+
+        if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()){
+            $prodUname=$row['username']; $prodPrice=$row["price"];$pName=$row["productName"];$pType=$row["type"];$pImage=$row["image1"];$pID=$row["prodID"];
+
+            if($uname==$prodUname){$icon="<i style=\"color:red;float: right;font-size: 20px;\" onclick='deleteProd(this)' class=\"fa fa-trash \"></i>";}
+            else $icon="";
+
+            $userFLname = "SELECT firstname,lastname FROM usertable WHERE username='$prodUname'";
+            $res=$conn->query($userFLname);
+            $row1=$res->fetch_assoc();
+            $FF=$row1["firstname"];
+            $LL=$row1["lastname"];
+
+            // output data of each row
+
+//echo $row["prodID"].$row["productName"].$row["type"].$row["price"].$row["image1"];
+
+                echo "
+                
+                <div class=\"w3-quarter prodDiv\">
+            <img src=\"productImages/".$pImage."\" alt=\"Sandwich\" style=\"width:100%\">
+            <h3 class=\"pName\">".$pName."</h3>
+            <p class=\"pType\">Type: ".$pType."</p>
+            <p class=\"pPrice\">".$prodPrice."&#8362;</p>
+            <p class=\"pOwner\">Owner: ".$FF." ".$LL."</p>
+            <p class=\"pID\">Product ID:   ".$pID."   ".$icon."</p>
+            <p class=\"ownerUname\">".$prodUname."</p>
+        </div>
+                ";
+                }
+}
+
+
+        ?>
+
+
+
+
+
+
+
+
+</div>
 
 <footer>
     <div class="row">
@@ -250,7 +368,7 @@ $conn->close();
     }
 </script>
 <script>
-    function showHint(str) {
+    function changeCol(str) {
         var u=<?php echo "\"$uname\""; ?> ;
 
         var col="";
@@ -270,18 +388,63 @@ $conn->close();
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
 
-
             var x=(xmlhttp.responseText);
             var y=x.substring(0,7);
-
-
-
 
         };
         xmlhttp.open("GET", "ajaxHandler.php?q=" + col+"&u="+u, true);
         xmlhttp.send();
 
     }
+
+    function filter() {
+        var input, filter, ul, li, a,a1,a2, i;
+        input = document.getElementById("searchinp");//search input
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("MPDiv");
+        li = ul.getElementsByClassName("prodDiv");
+
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByClassName("pType")[0];
+            a1=li[i].getElementsByClassName("pName")[0];
+            a2=li[i].getElementsByClassName("pOwner")[0];
+
+            if (a.innerHTML.toUpperCase().indexOf(filter) > -1||a1.innerHTML.toUpperCase().indexOf(filter) > -1||a2.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+
+            }
+        }
+    }
+    function deleteProd(ee) {
+        var uu=<?php echo "\"$uname\""; ?> ;
+       if (confirm('Are you sure you want to delete?')){
+
+           var x=ee.parentElement.parentElement.getElementsByClassName("pID")[0].innerHTML;
+           x=x.substring(12,17);
+
+alert(x);
+           ee.parentElement.parentElement.style.display="none";
+
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+
+            var x=(xmlhttp.responseText);
+
+
+        };
+
+        xmlhttp.open("GET", "ajaxHandler.php?del=" + x, true);
+        xmlhttp.send();
+       }
+    }
+
+
+
+
+
 
 </script>
 </body>

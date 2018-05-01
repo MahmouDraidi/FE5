@@ -117,12 +117,14 @@ if($pw1!=""){
 
     if($erMob=="" && $erEm=="" && $erPW=="" ){
     if($pw1==""&& $pw2=="")$pw1=$oldPW;
-        $sql="update usertable SET job='$job',pw='$pw1',email='$updatedEmail',FBaccount='$FB' WHERE username='$uname'";
+    $pw1=md5($pw1);
+        $sql="update usertable SET job='$job',pw='$pw1',email='$updatedEmail',FBaccount='$FBacc' WHERE username='$uname'";
         $conn->query($sql);
         $sql="update useradress SET buildingNom='$buildNom',street='$street',city='$city' WHERE username='$uname'";
         $conn->query($sql);
         $SuccessMSG="";
         $doneMSG="Your information has been updated successfully!";
+        header( "refresh:url=prof.php" );
 
 
     }

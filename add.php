@@ -10,6 +10,7 @@ $conn = new mysqli($servername, $DBusername,"","webproj");
 $color="";
 if(!(isset($_SESSION["USERNAME"]))){
     die("You need to log in first");
+
 }
 $uname=$_SESSION["USERNAME"];
 
@@ -27,7 +28,7 @@ $uimg=$row["userImage"];
 if(isset($_POST["add"])){
 
 $pName   =trim($_POST["prodName"]);
-$pType   =$_POST["prodType"];
+$pType   =$_POST["pppp"];
 $pPrice  =$_POST["prodPrice"];
 $pInfo   =$_POST["prodInfo"];
 $pAmount =$_POST["prodAmount"];
@@ -36,16 +37,31 @@ $im2=$_FILES["Image2"]["name"];
 $im3=$_FILES["Image3"]["name"];
 
 
-if(!(isset($pName)&&isset($pType)&&isset($pPrice)&&isset($pInfo)&&isset($pAmount)&&isset($im1)&&isset($im2)&&isset($im3))){
+
+if(!(isset($_POST["pppp"]))){
+    $message="Please choose Type of product";
+}
+
+
+if(($pName=="" ||$pPrice=="" ||$pInfo=="" ||$pAmount=="" )){
     $message="Please fill all fields";
 }
 if(!(is_numeric($pAmount))||!(is_numeric($pPrice))){
     $message="Amount and Price should be integers";
 }
+if($im1=="" || $im2=="" || $im3==""){
+    $message= "Please chose 3 images";
+}
+else{
     if (file_exists($target_dir.$im1)||file_exists($target_dir.$im2)||file_exists($target_dir.$im2)) {
-        $message= "Sorry, file already exists. try to change name of files";
+        $message= "Sorry, file already exists. try to change name of images";
 
     }
+}
+
+
+
+
 // Check file size
 
 if($message==""){
@@ -58,7 +74,8 @@ if($message==""){
          $sqlInsert="insert into product VALUES ('','$uname','$pName','$pPrice','$pAmount','$pType','$pInfo','$im1','$im2','$im3')";
         $result = $conn->query($sqlInsert);
 
-        $message="Product added successfully";
+        $message="Product was added successfully";
+    $pName=$pType=$pPrice=$pInfo=$pAmount="";
 
 
 
@@ -211,7 +228,9 @@ $conn->close();
         <button class="contact100-btn-show">
             <i style="color: white" class="fa fa-plus" aria-hidden="true"></i>
         </button>
-
+        <div>
+            <p id="warnMSG"><?php echo $message?></p>
+        </div>
         <div class="wrap-contact100">
             <button class="contact100-btn-hide">
                 <i class="fa fa-replay" aria-hidden="true"></i>
@@ -223,6 +242,7 @@ $conn->close();
 					Add new product
 				</span>
 
+
                 <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Name is required">
                     <span class="label-input100">Product name</span>
                     <input class="input100" type="text" name="prodName" placeholder="" value="<?php echo  $pName?>">
@@ -232,18 +252,18 @@ $conn->close();
                 <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Name is required">
                     <span class="label-input100">Product type</span>
 
-                    <select class="input100" name="prodType" >
+                    <select title="Choose type" class="input100" name="pppp"  >
                         <option value="" disabled selected>Choose option</option>
-                        <option value="Cars">Cars</option>
-                        <option value="Furninure">Furninure</option>
-                        <option value="Mobiles">Mobiles</option>
-                        <option value="Computer">Computer</option>
-                        <option value="Cameras">Cameras</option>
-                        <option value="Toys">Toys</option>
-                        <option value="Electronics">Electronics</option>
+                        <option value="Vehicles"        >Vehicles</option>
+                        <option value="Furniture"       >Furninure</option>
+                        <option value="Mobiles"         >Mobiles</option>
+                        <option value="Computer"        >Computer</option>
+                        <option value="Cameras"         >Cameras</option>
+                        <option value="Toys"            >Toys</option>
+                        <option value="Electronics"     >Electronics</option>
                         <option value="Sport equipments">Sport equipments</option>>
-                        <option value="Building Tools">Building Tools</option>
-                        <option value="Other">Other</option>
+                        <option value="Building Tools"  >Building Tools</option>
+                        <option value="Other"           >Other</option>
 
                     </select>
                     <span style="border: none;outline: none" class="focus-input100"></span>
@@ -277,7 +297,7 @@ $conn->close();
 
                 <div class="container-contact100-form-btn">
                     <button class="contact100-form-btn" type="submit" name="add">
-						<span>
+						<span style="color: white; font-size: 1.1em;">
 							Proceed
 							<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
 						</span>
@@ -297,9 +317,7 @@ $conn->close();
 
 
 </div>
-<div>
-    <p id="warnMSG"><?php echo $message?></p>
-</div>
+
 
 <footer>
     <div class="row">

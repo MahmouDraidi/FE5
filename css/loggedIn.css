@@ -19,7 +19,7 @@
 .slideshow-container {
 // max-width: 1000px;
     position: relative;
-//margin: -35px 0 0 60px;
+    margin: 0px 50px;
 }
 
 /* Caption text */
@@ -73,4 +73,9 @@
     /* margin-left: 100px; */
     margin: 160px 5px 20px;
 
+}
+@media screen and (max-width: 600px) {
+    .slideshow-container {
+        margin: 0px 10px;
+    }
 }

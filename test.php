@@ -21,7 +21,16 @@ if (isset($_REQUEST["q"])){
 
 
 }
-
+if($conn=new mysqli('localhost',"root",'','webproj')
+){
+$pw1="Mahmoud122333";
+$pw="Mahmoud122333";
+$pw=md5($pw);
+$sql="update test set uname='$pw' WHERE uname='fuck'";
+echo $pw."<br>";
+$pw1=md5($pw1);
+echo $pw1;
+}
 //echo $x;
 // Output "no suggestion" if no hint was found or output correct values
 //echo $hint === "" ? "no suggestion" : $hint;

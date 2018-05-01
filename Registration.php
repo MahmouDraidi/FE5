@@ -133,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $actiCode=rand(100000,999999);
      $_SESSION["FinishedReg"] = "Yeah";
 
-
+     $pw1=md5($pw1);
      $sqlInsert = "insert into usertable VALUES('$regUname','$First','$last','$sex','$job','$pw1','$regEmail','$BD','$mob','No','$FBacc','$actiCode','#00bcd4')";
      $result = $conn->query($sqlInsert);
 //     $sqlInsert="insert into usertable(FBaccount) VALUES ('$FBacc')WHERE username='$regUname'";
