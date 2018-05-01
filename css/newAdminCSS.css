@@ -42,6 +42,7 @@ ul {
     width: 20%;
     box-sizing: border-box;
 }
+
 #sidebar .logo {
     width: 100%;
     height: 200px;
@@ -51,6 +52,7 @@ ul {
     text-transform: uppercase;
     color: white;
     font-family:  'Pacifico', cursive;
+    //
 }
 #sidebar a {
     padding: 15px 25px;

@@ -7,7 +7,7 @@ $db = new mysqli("localhost", 'root', '', 'webproj');
 
 
 
-if ($_REQUEST['id']){  /**/
+if ($_REQUEST['id']){
 
     $id = $_REQUEST['id'];
     $res = $db->query("delete from feedback where messageID ='".$id."'");

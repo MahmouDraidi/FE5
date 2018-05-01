@@ -27,7 +27,7 @@ if ($_REQUEST['k']) {
         <img class='deleteIcon' id=" . $row['messageID'] . " src='removeIcon.png' onclick=deleteMessage('" . $row['messageID'] . "') ></p>  </div> ";
         }
     }
-
+/**/
 
     if ($c == "user") {
         if ($userResult) {
